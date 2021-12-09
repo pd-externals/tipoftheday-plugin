@@ -76,7 +76,30 @@ if { ! [catch {package present tls} stdout] } {
 # ######################################################################
 
 proc ::tip-of-the-day::add_tip {message detail} {
+    foreach tip ${::tip-of-the-day::tips} {
+        foreach {m d} $tip {
+            if { ${m} eq ${message} && ${d} eq ${detail} } {
+                #puts "drop dupe: ${message}"
+                return
+            }
+        }
+    }
     lappend ::tip-of-the-day::tips [list [_ $message] [_ $detail]]
+}
+
+proc ::tip-of-the-day::load {filename} {
+    if {[catch {set fp [open $filename r]}]} {
+        #puts "unable to open $filename"
+        return
+    }
+    while { [gets $fp data] >= 0 } {
+        foreach {version msg detail} [ split $data "\t" ] {
+            # for now ignore the version; later use it to exclude tips:
+            # if { ${version} > ${pd_version} } { continue }
+            ::tip-of-the-day::add_tip ${msg} ${detail}
+        }
+    }
+    close $fp
 }
 
 # ######################################################################
@@ -102,17 +125,17 @@ proc ::tip-of-the-day::syncgui {} {
 proc ::tip-of-the-day::show {{tipid ""}} {
     set numtips [llength ${::tip-of-the-day::tips}]
     if { ! $numtips } {
-        puts "no tips available"
+        ::pdwindow::post [_ "no tips-of-the-day available" ]
+        ::pdwindow::post "\n"
         return
     }
     if { "${tipid}" eq "" } {
         set tipid [expr int(rand() * $numtips)]
     }
-    puts "tip $tipid/$numtips"
     set tipid [expr $tipid % $numtips]
     foreach {title body} [lindex ${::tip-of-the-day::tips} $tipid] {break}
     tk_messageBox -title [_ "Tip of the Day"] -type ok \
-        -message $title -detail $body
+        -message [_ ${title}] -detail [_ ${body}]
     return
 
     set winid .tip-of-the-day
@@ -213,8 +236,14 @@ proc ::tip-of-the-day::initialize {} {
         $mymenu add command -label [_ "Tip of the Day"] -command {::tip-of-the-day::show}
     }
 
-
-    ::tip-of-the-day::add_tip "${::modifier}-Click messages in the Pd-console to find its origin." "You can find the source of many errors and other printouts in the Pd-console by ${::modifier}-clicking the line."
+    lappend ::tip-of-the-day::tips
+    foreach pathdir [concat $::current_plugin_loadpath $::sys_temppath $::sys_searchpath $::sys_staticpath] {
+        set dir [file normalize $pathdir]
+        if { ! [file isdirectory $dir]} {continue}
+        foreach filename [glob -directory $dir -nocomplain -types {f} -- tip-of-the-day*.tsv] {
+            ::tip-of-the-day::load $filename
+        }
+    }
 }
 
 ::tip-of-the-day::initialize
