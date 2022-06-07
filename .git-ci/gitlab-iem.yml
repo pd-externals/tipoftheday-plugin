@@ -8,6 +8,7 @@ pages:
   variables:
     GIT_SUBMODULE_STRATEGY: recursive
   script:
+  - sed -i "1i baseURL = \"${CI_PROJECT_NAME}\"" config.toml
   - .git-ci/tips2md.sh
   - hugo
   artifacts:
