@@ -48,4 +48,5 @@ for tip in tips/*.txt; do
 done
 
 mkdir -p static
-zip -r static/tips.zip tips
+cd tips
+zip -r ../static/tips.zip *
