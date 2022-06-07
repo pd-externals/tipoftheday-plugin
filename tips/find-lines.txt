@@ -1,3 +1,2 @@
 TITLE	Ctrl-click messages in the Pd-console to find its origin.
 DETAIL	You can find the source of many errors and other printouts by Ctrl-clicking the line in the Pd-console.
-URL	https://puredata.info/
