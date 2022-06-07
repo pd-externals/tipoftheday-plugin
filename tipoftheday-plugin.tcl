@@ -97,8 +97,6 @@ proc ::tip-of-the-day::load {filename} {
 
     set title [string map { \{ \" \} \" } [string trim $title] ]
     set detail [string map { \{ \" \} \" } [string trim $detail] ]
-    puts "title: $title"
-    puts "detail: $detail"
 
     set image "[file rootname $filename].gif"
     if {! [file exists $image] } {
