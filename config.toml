@@ -1,4 +1,4 @@
-baseURL = "/"
+#baseURL = "/"
 languageCode = "en-us"
 theme = "PaperMod"
 title = "Pd - Tip of the Day"
