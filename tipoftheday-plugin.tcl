@@ -20,6 +20,9 @@ namespace eval ::tip-of-the-day:: {
     variable version
     variable tips
     variable current_tip
+
+    variable images
+    variable imageloop
 }
 
 ## only register this plugin if there isn't any newer version already registered
@@ -92,7 +95,10 @@ proc ::tip-of-the-day::load {filename} {
     }
     close $fp
 
+    set title [string map { \{ \" \} \" } [string trim $title] ]
     set detail [string map { \{ \" \} \" } [string trim $detail] ]
+    puts "title: $title"
+    puts "detail: $detail"
 
     set image "[file rootname $filename].gif"
     if {! [file exists $image] } {
@@ -103,25 +109,55 @@ proc ::tip-of-the-day::load {filename} {
     }
 }
 
-proc ::tip-of-the-day::loopImgFromMemory {targetimg imagelist {index 0} {time 100}} {
+# create an image and assoicate it with a widget
+proc ::tip-of-the-day::make_image {winid} {
+    variable images
+    set newimg [image create photo]
+    lappend images($winid) $newimg
+    return $newimg
+}
+# remove all (temporary) images associated with a widget
+proc ::tip-of-the-day::free_imageloop {winid} {
+    # cancel the running imageloop
+    variable imageloop
+    if { [info exists imageloop($winid) ] } {
+        after cancel $imageloop($winid)
+    }
+
+    # free all temporary images
+    variable images
+    if { [info exists images($winid) ] } {
+        foreach img $images($winid) {
+            catch {image delete $img}
+        }
+    }
+}
+
+# loop through images that are cached in memory
+# this is done by simply copying the cached image to the targetimage
+proc ::tip-of-the-day::loopImgFromMemory {winid targetimg imagelist {index 0} {time 100}} {
     set img [lindex $imagelist $index]
     set nextIndex [expr ($index + 1) % [llength $imagelist]]
     $targetimg copy $img -compositingrule overlay
-    after $time [list ::tip-of-the-day::loopImgFromMemory $targetimg $imagelist $nextIndex $time]
+    set ::tip-of-the-day::imageloop($winid) [after $time [list ::tip-of-the-day::loopImgFromMemory $winid $targetimg $imagelist $nextIndex $time]]
 }
 
-proc ::tip-of-the-day::loopImgFromDisk {targetimg fileimg {index 0} {time 100} {imagelist {}}} {
+# loop through images of a multi-frame GIF
+# while the frames are read (and composited to the final frame) they are also cached
+# this speeds up looping significantly after the first round
+proc ::tip-of-the-day::loopImgFromDisk {winid targetimg fileimg {index 0} {time 100} {imagelist {}}} {
     if {[catch {$fileimg configure -format "gif -index $index"} stderr]} {
         image delete $fileimg
-        ::tip-of-the-day::loopImgFromMemory $targetimg $imagelist 0 ${time}
+        ::tip-of-the-day::loopImgFromMemory $winid $targetimg $imagelist 0 ${time}
     } else {
         $targetimg copy $fileimg -compositingrule overlay
 
-        set newimg [image create photo -height [image height $targetimg] -width [image width $targetimg]]
+        set newimg [::tip-of-the-day::make_image $winid]
+        $newimg configure -height [image height $targetimg] -width [image width $targetimg]
         $newimg copy $targetimg -compositingrule set
         lappend imagelist $newimg
 
-        after ${time} [list ::tip-of-the-day::loopImgFromDisk $targetimg $fileimg [expr {$index + 1}] $time $imagelist]
+        set ::tip-of-the-day::imageloop($winid) [after ${time} [list ::tip-of-the-day::loopImgFromDisk $winid $targetimg $fileimg [expr {$index + 1}] $time $imagelist]]
     }
 }
 
@@ -161,11 +197,13 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
     }
     $textwin insert end ${detail}
 
+    ::tip-of-the-day::free_imageloop $textwin
     if { {} ne ${image} } {
-        set fileimg [image create photo -file $image]
-        set img [image create photo -file [$fileimg cget -file]]
-        $textwin image create end -image $img
-         ::tip-of-the-day::loopImgFromDisk $img $fileimg
+        set fileimg [::tip-of-the-day::make_image $textwin]
+        $fileimg configure -file $image
+        $textwin.img configure -file [$fileimg cget -file]
+        $textwin image create end -image $textwin.img
+        ::tip-of-the-day::loopImgFromDisk $textwin $textwin.img $fileimg
     }
 
 
@@ -226,6 +264,7 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
     $msgid tag bind moreurl <Enter> "$msgid tag configure moreurl -underline 1; $msgid configure -cursor $::cursor_runmode_clickme"
     $msgid tag bind moreurl <Leave> "$msgid tag configure moreurl -underline 0; $msgid configure -cursor xterm"
 
+    image create photo $msgid.img
 
     ######################################################
     # user interaction: disable TOD, udpate TOD, Close, Next
