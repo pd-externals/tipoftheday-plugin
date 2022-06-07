@@ -69,9 +69,10 @@ proc ::tip-of-the-day::add_tip {message detail url image} {
 
 ## load tip from filename
 proc ::tip-of-the-day::load {filename} {
+    set result 0
     if {[catch {set fp [open $filename r]}]} {
         #puts "unable to open $filename"
-        return
+        return $result
     }
     set title {}
     set detail {}
@@ -104,7 +105,9 @@ proc ::tip-of-the-day::load {filename} {
     }
     if { $compat && "${title}{$detail}" ne "" } {
         ::tip-of-the-day::add_tip $title $detail $url $image
+        set result 1
     }
+    return $result
 }
 
 # create an image and assoicate it with a widget
