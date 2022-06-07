@@ -80,7 +80,7 @@ proc ::tip-of-the-day::load {filename} {
         if { "TITLE" eq $id } {
             set title $data
         } elseif { "DETAIL" eq $id } {
-            set detail $data
+            set detail "$detail\n$data"
         } elseif { "URL" eq $id } {
             set url $data
         } elseif { "COMPAT" eq $id } {
@@ -91,6 +91,9 @@ proc ::tip-of-the-day::load {filename} {
         }
     }
     close $fp
+
+    set detail [string map { \{ \" \} \" } [string trim $detail] ]
+
     set image "[file rootname $filename].gif"
     if {! [file exists $image] } {
         set image {}
@@ -137,8 +140,9 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
     $textwin insert end ${detail}
 
     if { {} ne ${url} } {
+        $textwin tag bind moreurl <1> [list pd_menucommands::menu_openfile $url]
         $textwin insert end "\n\n"
-        $textwin insert end [_ "More..."] moreurl
+        $textwin insert end [_ "More info..."] moreurl
     }
     $textwin configure -state disabled
 
@@ -188,7 +192,7 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
     $msgid tag configure title -font "-weight bold"
     $msgid tag configure moreurl -foreground blue
 
-    $msgid tag bind moreurl <1> "pd_menucommands::menu_openfile https://deken.puredata.info/"
+    $msgid tag bind moreurl <1> "pd_menucommands::menu_openfile https://puredata.info/"
     $msgid tag bind moreurl <Enter> "$msgid tag configure moreurl -underline 1; $msgid configure -cursor $::cursor_runmode_clickme"
     $msgid tag bind moreurl <Leave> "$msgid tag configure moreurl -underline 0; $msgid configure -cursor xterm"
 
