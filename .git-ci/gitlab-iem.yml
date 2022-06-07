@@ -1,0 +1,15 @@
+---
+include:
+  - https://git.iem.at/pd/iem-ci/raw/main/pd-lib-builder/gitlab-iem.yml
+
+pages:
+  stage: build
+  image: registry.gitlab.com/pages/hugo:latest
+  script:
+  - .git-ci/tips2md.sh
+  - hugo
+  artifacts:
+    paths:
+    - public
+  only:
+  - main
