@@ -4,15 +4,15 @@ Tip of the Day
 simple plugin to display a "Tip of the Day" dialog at startup of Pd.
 
 
-## Updating the Tips database
+# Updating the Tips database
 In order to get the lastest and greatest tips,
 click on the "Check for updated tips" link.
 
-### TODO
+#### TODO
 this is actually not implemented yet :-(
 
 
-## Adding new Tips
+# Adding new Tips
 
 Adding tips is simple:
 
@@ -38,9 +38,16 @@ Adding tips is simple:
 
 3. create a *Pull Request* with the new tip(s)
 
+# Web interface
+
+There's an experimental web-interface for browsing the tips:
+
+https://pd.iem.sh/tipoftheday-plugin/
 
 
-## This is annoying.
+# FAQ
+
+### This is annoying.
 Since "Tip of the Day" dialogs are super-annoying for most users,
 you can disable them by unchecking the "Show tips on every startup" in the dialog.
 
