@@ -46,3 +46,6 @@ for tip in tips/*.txt; do
     markdownify "${tip}" > "${t}/index.md"
     [ ! -e "${tip%.txt}.gif" ] || cp "${tip%.txt}.gif" "${t}/"
 done
+
+mkdir -p static
+zip -r static/tips.zip tips
