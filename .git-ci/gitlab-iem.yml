@@ -10,7 +10,7 @@ pages:
   script:
   - sed -i "1i baseURL = \"/${CI_PROJECT_NAME}/\"" config.toml
   - cat config.toml
-  - .git-ci/tips2md.sh
+  - .git-ci/tips2hugo.sh
   - hugo
   artifacts:
     paths:
