@@ -1,2 +1,0 @@
-0	Ctrl-click messages in the Pd-console to find its origin.	You can find the source of many errors and other printouts by Ctrl-clicking the line in the Pd-console.
-0	Change the font-size for menus.	You can change the font-size for the menu and the Pd-console via the "Font" menu of the main Pd-window.
