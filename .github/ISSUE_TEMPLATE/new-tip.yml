@@ -36,3 +36,22 @@ body:
       render: plain text
     validations:
       required: true
+  - type: input
+    id: url
+    attributes:
+      label: URL
+      description: A link with additional information on the topic.
+      placeholder: https://github.com/pd-externals/tipoftheday-plugin/issues/new?template=new-tip.yml
+    validations:
+      required: true
+  - type: textarea
+    id: image
+    attributes:
+      label: Image
+      description: Optionally upload an image
+      placeholder: |
+        You can use this field to upload an (animated) GIF.
+        Please do *not* use this field for anything else.
+    validations:
+      required: false
+
