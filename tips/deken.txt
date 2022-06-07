@@ -1,0 +1,3 @@
+TITLE	Install missing libraries with "deken"
+DETAIL	Use the built-in package manager "deken" to search and install libraries missing on your system.
+URL	https://deken.puredata.info/
