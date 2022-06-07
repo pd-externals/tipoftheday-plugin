@@ -63,10 +63,11 @@ proc ::tip-of-the-day::add_tip {message detail url image} {
         foreach {m d} $tip {break}
         if { ${m} eq ${message} && ${d} eq ${detail} } {
             #puts "drop dupe: ${message}"
-            return
+            return 0
         }
     }
     lappend ::tip-of-the-day::tips [list $message $detail $url $image]
+    return 1
 }
 
 ## load tip from filename
@@ -106,8 +107,9 @@ proc ::tip-of-the-day::load {filename} {
         set image {}
     }
     if { $compat && "${title}{$detail}" ne "" } {
-        ::tip-of-the-day::add_tip $title $detail $url $image
-        set result 1
+        if { [::tip-of-the-day::add_tip $title $detail $url $image] } {
+            set result 1
+        }
     }
     return $result
 }
