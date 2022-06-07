@@ -12,6 +12,14 @@ click on the "Check for updated tips" link.
 this is actually not implemented yet :-(
 
 
+# Web interface
+
+There's an experimental web-interface for browsing the tips:
+
+https://pd.iem.sh/tipoftheday-plugin/
+
+
+
 # Adding new Tips
 
 Adding tips is simple:
@@ -25,24 +33,30 @@ Adding tips is simple:
    URL     https://github.com/pd-externals/tipoftheday-plugin/
    ```
 
-   The first word in each line defines the type of information you want to add
-   - `TITLE` a short description of the tip
-   - `DETAIL` a longer description of the tip. for multiple lines, just add more `DETAIL` lines
-   - `URL` an (optional) URL that will show as `More info...`
-
 2. sometimes a picture says more
 
    For patching workflows it often makes sense to illustrate the tip with an picture.
    To do so, just add an (animated, if you like) GIF image that has the same name as your TXT file (e.g. `tips/new-tip.gif`).
-   Make sure that you GIF is small enough to fit into the dialog.
+   Make sure that your GIF is small enough to fit into the dialog.
 
 3. create a *Pull Request* with the new tip(s)
 
-# Web interface
 
-There's an experimental web-interface for browsing the tips:
+### TXT format for tips
+Each line in the TXT file *must* start with a keyword,
+defining the type of information that follows:
+- `TITLE` a short description of the tip
+   (only a single `TITLE`-line is allowed)
+- `DETAIL` a longer description of the tip. for multiple lines, just add more `DETAIL` lines
+- `URL` an (optional) URL that will show as `More info...`
+   (only a single `URL`-line is allowed)
 
-https://pd.iem.sh/tipoftheday-plugin/
+Currently these are the only keywords supported.
+
+### GIF format for tips
+
+GIFs should be no larger than 650x533 pixels.
+Animated GIFs will be played back at a framerate of 10fps (the settings in the GIF are ignored).
 
 
 # FAQ
