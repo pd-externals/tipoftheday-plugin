@@ -47,8 +47,10 @@ EOF
 }
 
 for tip in tips/*.txt; do
+    if [ ! -e "${tip}" ]; then continue; fi
     t=${tip%.txt}
     t=${t##*/}
+    echo "adding tip ${tip}"
     mkdir -p "content/tips/${t}"
     t="content/tips/${t}"
     markdownify "${tip}" > "${t}/index.md"
