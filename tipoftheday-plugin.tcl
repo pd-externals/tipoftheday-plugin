@@ -103,6 +103,28 @@ proc ::tip-of-the-day::load {filename} {
     }
 }
 
+proc ::tip-of-the-day::loopImgFromMemory {targetimg imagelist {index 0} {time 100}} {
+    set img [lindex $imagelist $index]
+    set nextIndex [expr ($index + 1) % [llength $imagelist]]
+    $targetimg copy $img -compositingrule overlay
+    after $time [list ::tip-of-the-day::loopImgFromMemory $targetimg $imagelist $nextIndex $time]
+}
+
+proc ::tip-of-the-day::loopImgFromDisk {targetimg tmpimg {index 0} {time 100} {imagelist {}}} {
+    if {[catch {$tmpimg configure -format "gif -index $index"} stderr]} {
+        image delete $tmpimg
+        ::tip-of-the-day::loopImgFromMemory $targetimg $imagelist 0 ${time}
+    } else {
+        $targetimg copy $tmpimg -compositingrule overlay
+
+        set newimg [image create photo -height [image height $targetimg] -width [image width $targetimg]]
+        $newimg copy $targetimg -compositingrule set
+        lappend imagelist $newimg
+
+        after ${time} [list ::tip-of-the-day::loopImgFromDisk $targetimg $tmpimg [expr {$index + 1}] $time $imagelist]
+    }
+}
+
 # ######################################################################
 # ################ core ################################################
 # ######################################################################
@@ -138,6 +160,14 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
         $textwin insert end "\n\n"
     }
     $textwin insert end ${detail}
+
+    if { {} ne ${image} } {
+        set img [image create photo -file $image]
+        set tmpimg [image create photo -file [$img cget -file]]
+        $textwin image create end -image $img
+         ::tip-of-the-day::loopImgFromDisk $img $tmpimg
+    }
+
 
     if { {} ne ${url} } {
         $textwin tag bind moreurl <1> [list pd_menucommands::menu_openfile $url]
