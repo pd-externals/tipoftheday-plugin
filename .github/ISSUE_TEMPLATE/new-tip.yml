@@ -31,8 +31,8 @@ body:
       label: Detail
       description: Longer description of the tip. (plain text)
       placeholder: |
-		Everybody is invited to add one or more Tips-of-the-Day.
-		Simply create a Pull Request or a new ticket.
+        Everybody is invited to add one or more Tips-of-the-Day.
+        Simply create a Pull Request or a new ticket.
       render: plain text
     validations:
       required: true
