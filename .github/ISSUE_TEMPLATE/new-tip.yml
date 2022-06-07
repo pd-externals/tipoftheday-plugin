@@ -1,0 +1,38 @@
+name: Tip of the Day
+description: Request a new Tip-of-the-Day
+title: "[Tip]: "
+#labels: ["bug", "triage"]
+assignees:
+  - umlaeute
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to submit a new Tip-of-the-Day.
+  - type: input
+    id: filename
+    attributes:
+      label: Tip ID
+      description: Suggested filename for the new tip (without path and extension)
+      placeholder: new-tip
+    validations:
+      required: false
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: Short description of the tip 
+      placeholder: Join the community by adding more Tips-of-the-Day
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Detail
+      description: Longer description of the tip. (plain text)
+      placeholder: |
+		Everybody is invited to add one or more Tips-of-the-Day.
+		Simply create a Pull Request or a new ticket.
+      render: plain text
+    validations:
+      required: true
