@@ -52,5 +52,5 @@ for tip in tips/*.txt; do
     mkdir -p "content/tips/${t}"
     t="content/tips/${t}"
     markdownify "${tip}" > "${t}/index.md"
-    [  -e "${tip%.txt}.gif" ] && cp "${tip%.txt}.gif" "${t}/"
+    [ ! -e "${tip%.txt}.gif" ] || cp "${tip%.txt}.gif" "${t}/"
 done
