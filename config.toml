@@ -8,7 +8,7 @@ description = "things you should know about Pure Data"
   #twitter = "" # add your twitter profile
   #email = "zmoelnig@iem.at"
   #download = "https://iem.at/"
-
+  disableSpecial1stPost = true
 [[menu.main]]
     name = "Tips"
     weight = -200
