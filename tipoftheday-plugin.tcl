@@ -183,6 +183,7 @@ proc ::tip-of-the-day::get-new-tips {{winid .}} {
 
     set outdir [file normalize $outdir]
     set tipszip [::deken::utilities::download_file $URL tips-of-the-day.zip]
+    set numtips [llength ${::tip-of-the-day::tips}]
 
     ::deken::utilities::extract $outdir $tipszip [file normalize $tipszip] 0
     set tipsies 0
@@ -191,12 +192,17 @@ proc ::tip-of-the-day::get-new-tips {{winid .}} {
             incr tipsies
         }
     }
-    tk_messageBox \
-        -title [_ "Updated Tips of the Day" ] \
-        -message [format [_ "%d new tips added" ] $tipsies] \
-        -type ok \
-        -icon info \
-        -parent $winid
+    if { $tipsies > 0 } {
+        ::tip-of-the-day::messageBox $numtips
+    } else {
+        tk_messageBox \
+            -title [_ "Updated Tips of the Day" ] \
+            -message [format [_ "%d tips added" ] $tipsies] \
+            -type ok \
+            -icon info \
+            -parent $winid
+    }
+
 }
 
 
