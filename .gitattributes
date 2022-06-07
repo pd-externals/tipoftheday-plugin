@@ -1,0 +1,7 @@
+.git*      	export-ignore
+.travis.yml	export-ignore
+
+# hugo stuff
+/themes		export-ignore
+/config.toml	export-ignore
+/content	export-ignore
