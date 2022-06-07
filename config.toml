@@ -1,9 +1,7 @@
-#baseURL = "/"
 languageCode = "en-us"
 theme = "PaperMod"
 title = "Pd - Tip of the Day"
 description = "things you should know about Pure Data"
-Paginate = 4
 [Params]
   author = "Pd community" # add your company name
   github = "pd-externals" # add your github profile name
