@@ -1,0 +1,22 @@
+baseURL = "/"
+languageCode = "en-us"
+theme = "PaperMod"
+title = "Pd - Tip of the Day"
+description = "things you should know about Pure Data"
+Paginate = 4
+[Params]
+  author = "Pd community" # add your company name
+  github = "pd-externals" # add your github profile name
+  #twitter = "" # add your twitter profile
+  #email = "zmoelnig@iem.at"
+  #download = "https://iem.at/"
+
+[[menu.main]]
+    name = "Tips"
+    weight = -200
+    url = "/tips/"
+
+[[menu.main]]
+    name = "Legal"
+    weight = 999
+    url = "/legal/"
