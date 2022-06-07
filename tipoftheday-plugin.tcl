@@ -181,12 +181,12 @@ proc ::tip-of-the-day::get-new-tips {{winid .}} {
     }
 
 
+    set outdir [file normalize $outdir]
     set tipszip [::deken::utilities::download_file $URL tips-of-the-day.zip]
 
-    ::deken::utilities::extract $outdir  $tipszip [file normalize $tipszip] 0
+    ::deken::utilities::extract $outdir $tipszip [file normalize $tipszip] 0
     set tipsies 0
-    set dir [file normalize [file join $outdir tips]]
-    foreach filename [glob -directory $dir -nocomplain -types {f} -- "*.txt"] {
+    foreach filename [glob -directory $outdir -nocomplain -types {f} -- "*.txt"] {
         if { [::tip-of-the-day::load $filename] } {
             incr tipsies
         }
