@@ -18,6 +18,8 @@ package require pd_guiprefs
 
 namespace eval ::tip-of-the-day:: {
     variable version
+
+    variable tipsdirs
     variable tips
     variable current_tip
 
@@ -162,6 +164,40 @@ proc ::tip-of-the-day::loopImgFromDisk {winid targetimg fileimg {index 0} {time 
     }
 }
 
+
+proc ::tip-of-the-day::get-new-tips {{winid .}} {
+    set URL https://pd.iem.sh/tipoftheday-plugin/tips.zip
+    set outdir [::deken::utilities::get_writabledir ${::tip-of-the-day::tipsdirs}]
+
+    if { "${outdir}" eq {} } {
+        ::pdwindow::error [_ "None of these tips-of-the-day directories exists or is writable:"]
+        ::pdwindow::error "\n"
+        foreach d ${::tip-of-the-day::tipsdirs} {
+            ::pdwindow::error "\t$d\n"
+        }
+        return
+    }
+
+
+    set tipszip [::deken::utilities::download_file $URL tips-of-the-day.zip]
+
+    ::deken::utilities::extract $outdir  $tipszip [file normalize $tipszip] 0
+    set tipsies 0
+    set dir [file normalize [file join $outdir tips]]
+    foreach filename [glob -directory $dir -nocomplain -types {f} -- "*.txt"] {
+        if { [::tip-of-the-day::load $filename] } {
+            incr tipsies
+        }
+    }
+    tk_messageBox \
+        -title [_ "Updated Tips of the Day" ] \
+        -message [format [_ "%d new tips added" ] $tipsies] \
+        -type ok \
+        -icon info \
+        -parent $winid
+}
+
+
 # ######################################################################
 # ################ core ################################################
 # ######################################################################
@@ -280,9 +316,9 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
         -variable ::tip-of-the-day::run_at_startup \
         -command [list ::tip-of-the-day::save_prefs]
     pack $bt.startup -anchor w -side top -expand 1 -fill "x" -padx 15 -ipadx 10
-    label $bt.update -text "Check for updated tips" -fg blue -cursor hand2 -anchor e
-    #pack $bt.update -side top -expand 1 -fill "x" -padx 15 -ipadx 10
-    bind $bt.update "<Button-1>" [list ::pdwindow::error "Tip-of-the-Day update not implemented yet\n"]
+    label $bt.update -text "Check online for updated tips" -fg blue -cursor hand2 -anchor e
+    pack $bt.update -side top -expand 1 -fill "x" -padx 15 -ipadx 10
+    bind $bt.update "<Button-1>" [list ::tip-of-the-day::get-new-tips $winid]
 
     # Close/Next buttons
     set bt [frame $winid.nb.buttons]
@@ -335,8 +371,9 @@ proc ::tip-of-the-day::initialize {} {
     }
 
     lappend ::tip-of-the-day::tips
-    foreach pathdir [concat $::current_plugin_loadpath $::sys_temppath $::sys_searchpath $::sys_staticpath] {
-        set dir [file normalize [file join $pathdir tips]]
+    foreach pathdir [list [file join $::current_plugin_loadpath tips] [file join $::sys_libdir doc 7.stuff tips-of-the-day ]] {
+        set dir [file normalize $pathdir]
+        lappend ::tip-of-the-day::tipsdirs $dir
         if { ! [file isdirectory $dir]} {continue}
         foreach filename [glob -directory $dir -nocomplain -types {f} -- "*.txt"] {
             ::tip-of-the-day::load $filename
