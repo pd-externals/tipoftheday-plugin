@@ -110,18 +110,18 @@ proc ::tip-of-the-day::loopImgFromMemory {targetimg imagelist {index 0} {time 10
     after $time [list ::tip-of-the-day::loopImgFromMemory $targetimg $imagelist $nextIndex $time]
 }
 
-proc ::tip-of-the-day::loopImgFromDisk {targetimg tmpimg {index 0} {time 100} {imagelist {}}} {
-    if {[catch {$tmpimg configure -format "gif -index $index"} stderr]} {
-        image delete $tmpimg
+proc ::tip-of-the-day::loopImgFromDisk {targetimg fileimg {index 0} {time 100} {imagelist {}}} {
+    if {[catch {$fileimg configure -format "gif -index $index"} stderr]} {
+        image delete $fileimg
         ::tip-of-the-day::loopImgFromMemory $targetimg $imagelist 0 ${time}
     } else {
-        $targetimg copy $tmpimg -compositingrule overlay
+        $targetimg copy $fileimg -compositingrule overlay
 
         set newimg [image create photo -height [image height $targetimg] -width [image width $targetimg]]
         $newimg copy $targetimg -compositingrule set
         lappend imagelist $newimg
 
-        after ${time} [list ::tip-of-the-day::loopImgFromDisk $targetimg $tmpimg [expr {$index + 1}] $time $imagelist]
+        after ${time} [list ::tip-of-the-day::loopImgFromDisk $targetimg $fileimg [expr {$index + 1}] $time $imagelist]
     }
 }
 
@@ -162,10 +162,10 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
     $textwin insert end ${detail}
 
     if { {} ne ${image} } {
-        set img [image create photo -file $image]
-        set tmpimg [image create photo -file [$img cget -file]]
+        set fileimg [image create photo -file $image]
+        set img [image create photo -file [$fileimg cget -file]]
         $textwin image create end -image $img
-         ::tip-of-the-day::loopImgFromDisk $img $tmpimg
+         ::tip-of-the-day::loopImgFromDisk $img $fileimg
     }
 
 
