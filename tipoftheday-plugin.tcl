@@ -261,7 +261,7 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
 
     # make a nice window title
     set msg [_ "Tip of the Day"]
-    wm title [winfo toplevel $textwin] "$msg #${tipid}"
+    wm title [winfo toplevel $textwin] "$msg #${tipid}/${numtips}"
 }
 
 # create a new messagebox
