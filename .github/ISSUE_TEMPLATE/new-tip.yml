@@ -29,7 +29,7 @@ body:
     id: description
     attributes:
       label: Detail
-      description: Longer description of the tip. (plain text)
+      description: Longer (plain text) description of the tip.
       placeholder: |
         Everybody is invited to add one or more Tips-of-the-Day.
         Simply create a Pull Request or a new ticket.
@@ -43,7 +43,7 @@ body:
       description: A link with additional information on the topic.
       placeholder: https://github.com/pd-externals/tipoftheday-plugin/issues/new?template=new-tip.yml
     validations:
-      required: true
+      required: false
   - type: textarea
     id: image
     attributes:
@@ -52,6 +52,8 @@ body:
       placeholder: |
         You can use this field to upload an (animated) GIF.
         Please do *not* use this field for anything else.
+        GIFs should be smaller than 650x533.
+        Animated GIFs should have a constant framerate of 10fps.
     validations:
       required: false
 
