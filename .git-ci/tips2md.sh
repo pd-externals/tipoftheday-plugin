@@ -19,27 +19,17 @@ markdownify() {
     cat <<EOF
 ---
 title: "${title}"
-EOF
-
-    img="${1%.txt}".gif
-    if [  -e "${img}" ]; then
-    cat <<EOF
-cover:
-  image: "${img##*/}"
-EOF
-    fi
-    
-    cat <<EOF
-editPost:
-        URL: "${url}"
-        Text: "More info..."
-        appendFilePath: false
 ---
 
 ${description}
 
 
 EOF
+    img="${1%.txt}".gif
+    if [  -e "${img}" ]; then
+        img=${img##*/}
+        echo "![$title]($img)"
+    fi
 
     if [ -n "${url}" ]; then
         echo "[More info...](${url})"
