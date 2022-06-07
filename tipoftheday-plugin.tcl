@@ -12,28 +12,14 @@ package require Tcl 8.4
 #   If a requirement is missing,
 #   Pd will load, but the script will not.
 
-package require http 2
-# try enabling https if possible
-if { [catch {package require tls} ] } {} else {
-    ::tls::init -ssl2 false -ssl3 false -tls1 true
-    ::http::register https 443 ::tls::socket
-}
-# try enabling PROXY support if possible
-if { [catch {package require autoproxy} ] } {} else {
-    ::autoproxy::init
-    if { ! [catch {package present tls} stdout] } {
-        ::http::register https 443 ::autoproxy::tls_socket
-    }
-}
-
 package require pdwindow 0.1
 package require pd_menucommands 0.1
 package require pd_guiprefs
 
 namespace eval ::tip-of-the-day:: {
     variable version
-    # whether to use http:// or https://
-    variable protocol
+    variable tips
+    variable current_tip
 }
 
 ## only register this plugin if there isn't any newer version already registered
@@ -66,40 +52,52 @@ proc ::tip-of-the-day::versioncheck {version} {
 ## put the current version of this package here:
 if { [::tip-of-the-day::versioncheck 0.0.0] } {
 
-set ::tip-of-the-day::protocol "http"
-if { ! [catch {package present tls} stdout] } {
-    set ::tip-of-the-day::protocol "https"
-}
-
-# ######################################################################
-# ################ utilities ##########################################
-# ######################################################################
-
-proc ::tip-of-the-day::add_tip {message detail} {
+## add tip (without duplicates)
+proc ::tip-of-the-day::add_tip {message detail url image} {
     foreach tip ${::tip-of-the-day::tips} {
-        foreach {m d} $tip {
-            if { ${m} eq ${message} && ${d} eq ${detail} } {
-                #puts "drop dupe: ${message}"
-                return
-            }
+        foreach {m d} $tip {break}
+        if { ${m} eq ${message} && ${d} eq ${detail} } {
+            #puts "drop dupe: ${message}"
+            return
         }
     }
-    lappend ::tip-of-the-day::tips [list [_ $message] [_ $detail]]
+    lappend ::tip-of-the-day::tips [list $message $detail $url $image]
 }
 
+## load tip from filename
 proc ::tip-of-the-day::load {filename} {
     if {[catch {set fp [open $filename r]}]} {
         #puts "unable to open $filename"
         return
     }
+    set title {}
+    set detail {}
+    set url {}
+    set compat 1
     while { [gets $fp data] >= 0 } {
-        foreach {version msg detail} [ split $data "\t" ] {
-            # for now ignore the version; later use it to exclude tips:
-            # if { ${version} > ${pd_version} } { continue }
-            ::tip-of-the-day::add_tip ${msg} ${detail}
+        set id [lindex $data 0]
+        set data [lrange $data 1 end]
+        if { "TITLE" eq $id } {
+            set title $data
+        } elseif { "DETAIL" eq $id } {
+            set detail $data
+        } elseif { "URL" eq $id } {
+            set url $data
+        } elseif { "COMPAT" eq $id } {
+            # for now ignore compatibility settings
+            # LATER use it to exclude tips if they are for Pd-versions that don't apply
+        } else {
+            #puts "ignoring unknown ID '$id'"
         }
     }
     close $fp
+    set image "[file rootname $filename].gif"
+    if {! [file exists $image] } {
+        set image {}
+    }
+    if { $compat && "${title}{$detail}" ne "" } {
+        ::tip-of-the-day::add_tip $title $detail $url $image
+    }
 }
 
 # ######################################################################
@@ -110,18 +108,126 @@ proc ::tip-of-the-day::load {filename} {
 
 ##### GUI ########
 proc ::tip-of-the-day::bind_globalshortcuts {toplevel} {
-    set closescript "destroy $toplevel"
-    bind $toplevel <$::modifier-Key-w> $closescript
+    bind $toplevel <$::modifier-Key-w> [list destroy $toplevel]
 }
 
-proc ::tip-of-the-day::syncgui {} {
-    update idletasks
+## save preferences (whether the user wants automatic tips on startup or not)
+proc ::tip-of-the-day::save_prefs {} {
+    ::pd_guiprefs::write tipoftheday_startup ${::tip-of-the-day::run_at_startup}
 }
 
+
+# puts the text/images of the given $tipid into $textwin
+# ($textwin is a reference to a 'text' widget)
+proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
+    if { ! [winfo exists $textwin] } {return}
+
+    if { {} eq $tipid} {
+        set tipid ${::tip-of-the-day::current_tip}
+    }
+    foreach {title detail url image} [lindex ${::tip-of-the-day::tips} $tipid] {break}
+
+    $textwin configure -state normal
+    $textwin delete 1.0 end
+
+    if { {} ne ${title} } {
+        $textwin insert end "${title}" title
+        $textwin insert end "\n\n"
+    }
+    $textwin insert end ${detail}
+
+    if { {} ne ${url} } {
+        $textwin insert end "\n\n"
+        $textwin insert end [_ "More..."] moreurl
+    }
+    $textwin configure -state disabled
+
+    # set the internal counter to the next tip
+    set tipid [expr ${tipid} + 1]
+    set ::tip-of-the-day::current_tip [expr $tipid %  [llength ${::tip-of-the-day::tips}] ]
+
+
+    # make a nice window title
+    set msg [_ "Tip of the Day"]
+    wm title [winfo toplevel $textwin] "$msg #${tipid}"
+}
+
+# create a new messagebox
+proc ::tip-of-the-day::messageBox {{tipid {}}} {
+    # we want more than a 'tk_titleBox' can offer...
+    # - non-modal
+    # - "Next" button
+    # - "..." button that offers a pulldown with
+    #   - "Fetch new tips from the internet"
+    #   - "Show Tip-of-the-Day on every startup" (checkbox)
+    set winid .tip-of-the-day
+    destroy $winid
+
+    toplevel $winid -class DialogWindow
+    set ::tip-of-the-day::winid $winid
+    wm title $winid [_ "Tip of the Day"]
+    wm geometry $winid 670x550
+    wm minsize $winid 230 360
+    wm resizable $winid 1 0
+    wm transient $winid
+    $winid configure -padx 10 -pady 5
+    focus $winid
+    bell -displayof $winid -nice
+
+    if {$::windowingsystem eq "aqua"} {
+        $winid configure -menu $::dialog_menubar
+    }
+
+    frame $winid.totd
+    pack $winid.totd -side top -fill "both"
+
+    set msgid $winid.totd.tip
+    text $msgid -padx 10 -pady 10 -wrap word
+    pack $msgid
+
+    $msgid tag configure title -font "-weight bold"
+    $msgid tag configure moreurl -foreground blue
+
+    $msgid tag bind moreurl <1> "pd_menucommands::menu_openfile https://deken.puredata.info/"
+    $msgid tag bind moreurl <Enter> "$msgid tag configure moreurl -underline 1; $msgid configure -cursor $::cursor_runmode_clickme"
+    $msgid tag bind moreurl <Leave> "$msgid tag configure moreurl -underline 0; $msgid configure -cursor xterm"
+
+
+    ######################################################
+    # user interaction: disable TOD, udpate TOD, Close, Next
+    # fopcus Close
+
+    frame $winid.nb
+    pack $winid.nb -side bottom -fill "x" -padx 2m -pady 2m -ipadx 2m
+
+    set bt [frame $winid.nb.config]
+    pack $bt -side left -fill "x"
+    checkbutton $bt.startup -text "Show tips on every startup" -anchor e \
+        -variable ::tip-of-the-day::run_at_startup \
+        -command [list ::tip-of-the-day::save_prefs]
+    pack $bt.startup -anchor w -side top -expand 1 -fill "x" -padx 15 -ipadx 10
+    label $bt.update -text "Check for updated tips" -fg blue -cursor hand2 -anchor e
+    #pack $bt.update -side top -expand 1 -fill "x" -padx 15 -ipadx 10
+    bind $bt.update "<Button-1>" [list ::pdwindow::error "Tip-of-the-Day update not implemented yet\n"]
+
+    # Close/Next buttons
+    set bt [frame $winid.nb.buttons]
+    pack $bt -side right -fill "x"
+    button $bt.close -text [_ "Close" ] \
+        -command [list destroy $winid]
+    pack $bt.close -side left -expand 1 -fill "x"
+    button $bt.next -text [_ "Next tip" ] \
+        -command [list ::tip-of-the-day::update_tip_info $msgid]
+    pack $bt.next -side left -expand 1 -fill "x" -padx 10
+    focus $bt.close
+
+    ::tip-of-the-day::bind_globalshortcuts $winid
+
+    ::tip-of-the-day::update_tip_info $msgid $tipid
+}
 # this function gets called
 # - at startup (if enabled)
 # - via the menu
-# by itself
 proc ::tip-of-the-day::show {{tipid ""}} {
     set numtips [llength ${::tip-of-the-day::tips}]
     if { ! $numtips } {
@@ -132,90 +238,8 @@ proc ::tip-of-the-day::show {{tipid ""}} {
     if { "${tipid}" eq "" } {
         set tipid [expr int(rand() * $numtips)]
     }
-    set tipid [expr $tipid % $numtips]
-    foreach {title body} [lindex ${::tip-of-the-day::tips} $tipid] {break}
-    tk_messageBox -title [_ "Tip of the Day"] -type ok \
-        -message [_ ${title}] -detail [_ ${body}]
+    ::tip-of-the-day::messageBox $tipid
     return
-
-    set winid .tip-of-the-day
-    destroy $winid
-
-    toplevel $winid -class DialogWindow
-    set ::tip-of-the-day::winid $winid
-    wm title $winid [_ "Tip of the Day"]
-    wm geometry $winid 670x550
-    wm minsize $winid 230 360
-    wm transient $winid
-    $winid configure -padx 10 -pady 5
-
-    if {$::windowingsystem eq "aqua"} {
-        $winid configure -menu $::dialog_menubar
-    }
-
-    frame $winid.searchbit
-    pack $winid.searchbit -side top -fill "x"
-
-    entry $winid.searchbit.entry -font 18 -relief sunken -highlightthickness 1 -highlightcolor blue
-    pack $winid.searchbit.entry -side left -padx 6 -fill "x" -expand true
-    bind $winid.searchbit.entry <Key-Return> "::tip-of-the-day::initiate_search $winid"
-    bind $winid.searchbit.entry <KeyRelease> "::tip-of-the-day::update_searchbutton $winid"
-    focus $winid.searchbit.entry
-    button $winid.searchbit.button -text [_ "Show all"] -default active -command "::tip-of-the-day::initiate_search $winid"
-    pack $winid.searchbit.button -side right -padx 6 -pady 3 -ipadx 10
-
-    frame $winid.objlib
-    pack $winid.objlib -side top -fill "x"
-    label $winid.objlib.label -text [_ "Search for: "]
-    radiobutton $winid.objlib.libraries -text [_ "libraries"] -variable ::tip-of-the-day::searchtype -value libraries
-    radiobutton $winid.objlib.objects -text [_ "objects"] -variable ::tip-of-the-day::searchtype -value objects
-    radiobutton $winid.objlib.both -text [_ "both"] -variable ::tip-of-the-day::searchtype -value name
-    foreach x {label libraries objects both} {
-        pack $winid.objlib.$x -side left -padx 6
-    }
-    # for Pd that supports it, add a 'translation' radio
-    if {[uplevel 2 info procs add_to_helppaths] ne ""} {
-        radiobutton $winid.objlib.translations -text [_ "translations"] -variable ::tip-of-the-day::searchtype -value translations
-        pack $winid.objlib.translations -side left -padx 6
-    }
-    frame $winid.warning
-    pack $winid.warning -side top -fill "x"
-    label $winid.warning.label -text [_ "Only install externals uploaded by people you trust."]
-    pack $winid.warning.label -side left -padx 6
-
-    text $winid.results -takefocus 0 -cursor hand2 -height 100 -yscrollcommand "$winid.results.ys set"
-    scrollbar $winid.results.ys -orient vertical -command "$winid.results yview"
-    pack $winid.results.ys -side right -fill "y"
-    pack $winid.results -side top -padx 6 -pady 3 -fill both -expand true
-
-    frame $winid.progress
-    pack $winid.progress -side top -fill "x"
-    if { ! [ catch {
-        ttk::progressbar $winid.progress.bar -orient horizontal -length 640 -maximum 100 -mode determinate -variable ::tip-of-the-day::progressvar } stdout ] } {
-        pack $winid.progress.bar -side top -fill "x"
-        proc ::tip-of-the-day::progress {x} { set ::tip-of-the-day::progressvar $x }
-        label ${winid}.progress.label -textvariable ::tip-of-the-day::progresstext -padx 0 -borderwidth 0
-        place ${winid}.progress.label -in ${winid}.progress.bar -x 1
-    }
-
-    frame $winid.status
-    pack $winid.status -side bottom -fill "x" -pady 3
-    label $winid.status.label -textvariable ::tip-of-the-day::statustext -relief sunken -anchor "w"
-    pack $winid.status.label -side bottom -fill "x"
-
-    set m .deken_moremenu
-    if { [winfo exists $m] } {
-        destroy $m
-    }
-    set m [menu $m]
-    $m add command -label [_ "Preferences..." ]  -command "::tip-of-the-day::preferences::show"
-    $m add command -label [_ "Install DEK file..." ]  -command "::tip-of-the-day::install_package_from_file"
-
-    button $winid.status.installdek -text [_ "More..." ] -command "tk_popup $m \[winfo pointerx $winid\] \[winfo pointery $winid\]"
-    pack $winid.status.installdek -side right -padx 6 -pady 3 -ipadx 10
-
-
-    ::tip-of-the-day::bind_globalshortcuts $winid
 }
 
 
@@ -232,18 +256,28 @@ proc ::tip-of-the-day::initialize {} {
     if { [catch {
         $mymenu entryconfigure [_ "Tip of the Day"] -command {::tip-of-the-day::show}
     } _ ] } {
-        $mymenu add separator
+        #$mymenu add separator
         $mymenu add command -label [_ "Tip of the Day"] -command {::tip-of-the-day::show}
     }
 
     lappend ::tip-of-the-day::tips
     foreach pathdir [concat $::current_plugin_loadpath $::sys_temppath $::sys_searchpath $::sys_staticpath] {
-        set dir [file normalize $pathdir]
+        set dir [file normalize [file join $pathdir tips]]
         if { ! [file isdirectory $dir]} {continue}
-        foreach filename [glob -directory $dir -nocomplain -types {f} -- tip-of-the-day*.tsv] {
+        foreach filename [glob -directory $dir -nocomplain -types {f} -- "*.txt"] {
             ::tip-of-the-day::load $filename
         }
     }
+
+    set startup [::pd_guiprefs::read tipoftheday_startup]
+    if { [catch {set startup [expr bool($startup) ] } ] } {
+        set startup 1
+    }
+    set ::tip-of-the-day::run_at_startup $startup
+    if { $startup } {
+        after idle ::tip-of-the-day::show
+    }
+
 }
 
 ::tip-of-the-day::initialize
