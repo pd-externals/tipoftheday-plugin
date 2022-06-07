@@ -220,9 +220,12 @@ proc ::tip-of-the-day::save_prefs {} {
 proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
     if { ! [winfo exists $textwin] } {return}
 
+    set numtips [llength ${::tip-of-the-day::tips}]
     if { {} eq $tipid} {
         set tipid ${::tip-of-the-day::current_tip}
     }
+    set tipid [expr $tipid % $numtips ]
+
     foreach {title detail url image} [lindex ${::tip-of-the-day::tips} $tipid] {break}
 
     $textwin configure -state normal
@@ -253,7 +256,7 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
 
     # set the internal counter to the next tip
     set tipid [expr ${tipid} + 1]
-    set ::tip-of-the-day::current_tip [expr $tipid %  [llength ${::tip-of-the-day::tips}] ]
+    set ::tip-of-the-day::current_tip [expr $tipid % $numtips ]
 
 
     # make a nice window title
