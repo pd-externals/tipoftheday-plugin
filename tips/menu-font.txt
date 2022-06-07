@@ -1,0 +1,2 @@
+TITLE	Change the font-size for menus.
+DETAIL	You can change the font-size for the menu and the Pd-console via the "Font" menu of the main Pd-window.
