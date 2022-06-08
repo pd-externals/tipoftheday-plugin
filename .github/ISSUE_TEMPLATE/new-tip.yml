@@ -14,14 +14,6 @@ body:
         Once reviewed, it will be automatically included in the collection.
 
         (If you only have a vague idea about a missing tip, just file a [feature request](https://github.com/pd-externals/tipoftheday-plugin/issues/new) instead...)
-  - type: input
-    id: filename
-    attributes:
-      label: Tip ID
-      description: Suggested filename for the new tip (without path and extension). Leave empty if unsure.
-      placeholder: new-tip
-    validations:
-      required: false
   - type: textarea
     id: details
     attributes:
