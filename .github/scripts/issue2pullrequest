@@ -122,7 +122,9 @@ def getData(args):
     # cleanup image (get rid of markdown)
     try:
         data["image"] = re.split(
-            r".*]\((.*\.gif)\)", d0.get("image", "").replace("\n", "")
+            r".*]\((.*\.gif)\)",
+            d0.get("image", "").replace("\n", ""),
+            flags=re.IGNORECASE,
         )[1]
     except IndexError:
         pass
