@@ -1,0 +1,3 @@
+TITLE	Shift-Drag for higher precision value adjustments
+DETAIL	Sometimes it is desired to set a slider or number box value with higher precision than what the standard resolution offers. Holding the shift key while dragging changes the increment to 1/100th of the normal value, giving you much finer control.
+AUTHOR	reduzent
