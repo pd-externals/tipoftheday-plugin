@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Test Action
+    name: New Tip from Issue
     if: contains(github.event.issue.labels.*.name, 'automated tip')
 
     runs-on: ubuntu-20.04
