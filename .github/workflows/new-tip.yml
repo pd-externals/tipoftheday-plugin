@@ -25,8 +25,7 @@ jobs:
       - name: Create tip-of-the-day files from issue
         run: |
           mkdir -p tips
-          ./parsejson.py --outdir tips --filename 'tip-${{ github.event.issue.number }}' --author '${{ github.actor }}' '${{ steps.issue-parser.outputs.parsed-issue }}'
-          ls -lha tips
+          .github/scripts/issue2pullrequest --outdir tips --filename 'tip-${{ github.event.issue.number }}' --author '${{ github.actor }}' '${{ steps.issue-parser.outputs.parsed-issue }}'
           find tips -type f -exec grep . {} +
 
       - name: Create PR with new tip-of-the-day
