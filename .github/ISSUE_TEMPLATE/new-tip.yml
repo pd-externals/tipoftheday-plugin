@@ -1,7 +1,7 @@
 name: Tip of the Day
 description: Request a new Tip-of-the-Day
 title: "[Tip]: "
-labels: ["autotip", "tip"]
+labels: ["automated tip", "tip"]
 assignees:
   - umlaeute
 body:
@@ -13,7 +13,7 @@ body:
     id: filename
     attributes:
       label: Tip ID
-      description: Suggested filename for the new tip (without path and extension)
+      description: Suggested filename for the new tip (without path and extension). Leave empty if unsure.
       placeholder: new-tip
     validations:
       required: false
@@ -22,7 +22,7 @@ body:
     attributes:
       label: Title
       description: Short description of the tip 
-      placeholder: Join the community by adding more Tips-of-the-Day
+      placeholder: Avoid fan-outs!
     validations:
       required: true
   - type: textarea
@@ -31,8 +31,9 @@ body:
       label: Detail
       description: Longer (plain text) description of the tip.
       placeholder: |
-        Everybody is invited to add one or more Tips-of-the-Day.
-        Simply create a new ticket in our bug tracker.
+        Most buggy Pd patches misbehave because the order-of-execution is ill-defined.
+
+        Therefore, avoid connecting a single message outlet to multiple inlets.  Instead, use [trigger] so you get a defined order-of-execution.
       render: plain text
     validations:
       required: true
@@ -41,7 +42,7 @@ body:
     attributes:
       label: URL
       description: An (optional) link with additional information on the topic.
-      placeholder: https://github.com/pd-externals/tipoftheday-plugin/issues/new
+      placeholder: http://msp.ucsd.edu/Pd_documentation/x2.htm#s3.3
     validations:
       required: false
   - type: textarea
@@ -50,10 +51,8 @@ body:
       label: Image
       description: Optionally upload an image
       placeholder: |
-        You can use this field to upload a single (animated) GIF.
-        All other content will be removed.
+        You can use this field to upload a single (animated) GIF.  All other content will be removed.
         .
-        GIFs should be smaller than 650x533.
-        Animated GIFs should have a constant framerate of 10fps.
+        GIFs should be smaller than 650x533.  Animated GIFs should have a constant framerate of 10fps.
     validations:
       required: false
