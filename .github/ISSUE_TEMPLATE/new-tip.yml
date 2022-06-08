@@ -22,14 +22,6 @@ body:
       placeholder: new-tip
     validations:
       required: false
-  - type: input
-    id: title
-    attributes:
-      label: Title
-      description: Short description of the tip 
-      placeholder: Avoid fan-outs!
-    validations:
-      required: true
   - type: textarea
     id: details
     attributes:
