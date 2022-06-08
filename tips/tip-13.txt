@@ -1,0 +1,5 @@
+TITLE	Remove fan-outs with triggerize
+DETAIL	You can get rid of fan-outs (where a single message outlet is connected to multiple inlets) by selecting objects that have fan-outs and then 'triggerizing' the selection with Ctrl-T.
+DETAIL	
+DETAIL	You can also select all objects (Ctrl-A) and then triggerize the entire window in a single go.
+AUTHOR	umlaeute
