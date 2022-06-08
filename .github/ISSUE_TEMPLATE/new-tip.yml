@@ -1,5 +1,5 @@
 name: Tip of the Day
-description: Request a new Tip-of-the-Day
+description: Submit a new Tip-of-the-Day
 title: "[Tip]: "
 labels: ["automated tip", "tip"]
 assignees:
@@ -9,6 +9,11 @@ body:
     attributes:
       value: |
         Thanks for taking the time to submit a new Tip-of-the-Day.
+
+        Please fill out the form to create a new tip.
+        Once reviewed, it will be automatically included in the collection.
+
+        (If you only have a vague idea about a missing tip, just file a [feature request](https://github.com/pd-externals/tipoftheday-plugin/issues/new) instead...)
   - type: input
     id: filename
     attributes:
