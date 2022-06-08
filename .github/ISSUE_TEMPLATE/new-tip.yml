@@ -15,6 +15,8 @@ body:
         Please fill out the form to create a new tip.  Once reviewed, it will be automatically included in the collection.
 
         (If you only have a vague idea about a missing tip, just file a [feature request](https://github.com/pd-externals/tipoftheday-plugin/issues/new) instead...)
+
+        Due to a bug in a script, it seems that you currently should not use quotes (e.g '"') in the "Details". We are working on a fix...
   - type: textarea
     id: details
     attributes:
