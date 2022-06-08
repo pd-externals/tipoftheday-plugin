@@ -9,6 +9,11 @@ description = "things you should know about Pure Data"
   #email = "zmoelnig@iem.at"
   #download = "https://iem.at/"
   disableSpecial1stPost = true
+
+[[Params.socialIcons]]
+  name = "github"
+  url = "https://github.com/pd-externals/tipoftheday-plugin/"
+
 [[menu.main]]
     name = "Add new Tip"
     weight = -200
