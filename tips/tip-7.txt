@@ -1,7 +1,7 @@
-TITLE	Submit your own Tip of the Day
-DETAIL	If you know of a nice tips, patching tricks or workflow hacks, you can submit them the the Tips of the Day database.
+TITLE	Submit your own "Tip of the Day"
+DETAIL	If you know any nice tips, patching tricks or workflow hacks, you can submit them the the "Tips of the Day" database.
 DETAIL	This way, more people will know about them.
 DETAIL	
-DETAIL	Clicking on the More info... link below will take you to our online submit form.
+DETAIL	Clicking on the "More info..." link below will take you to our online submit form.
 URL	https://github.com/pd-externals/tipoftheday-plugin/issues/new/choose
 AUTHOR	umlaeute
