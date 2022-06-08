@@ -9,6 +9,11 @@ body:
       value: |
         Thanks for taking the time to submit a new Tip-of-the-Day.
 
+        The Tips-of-the-Day will ultimately be displayed at Pd startup.
+        This means, that any fancy markdown formatting will be lost.
+        It also means, that *only* GIF images are supported (even if GitHub
+        let's you upload MP4-files, these will not be usable).
+
         Please fill out the form to create a new tip.
         Once reviewed, it will be automatically included in the collection.
 
@@ -40,7 +45,8 @@ body:
       description: Optionally upload an image
       placeholder: |
         You can use this field to upload a single (animated) GIF.  All other content will be removed.
-        .
         GIFs should be smaller than 650x533.  Animated GIFs should have a constant framerate of 10fps.
+        .
+        Please note that only GIFs are supported.
     validations:
       required: false
