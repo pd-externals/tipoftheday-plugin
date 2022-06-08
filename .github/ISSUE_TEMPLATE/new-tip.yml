@@ -1,7 +1,7 @@
 name: Tip of the Day
 description: Request a new Tip-of-the-Day
 title: "[Tip]: "
-#labels: ["bug", "triage"]
+labels: ["autotip", "tip"]
 assignees:
   - umlaeute
 body:
@@ -26,13 +26,13 @@ body:
     validations:
       required: true
   - type: textarea
-    id: description
+    id: details
     attributes:
       label: Detail
       description: Longer (plain text) description of the tip.
       placeholder: |
         Everybody is invited to add one or more Tips-of-the-Day.
-        Simply create a Pull Request or a new ticket.
+        Simply create a new ticket in our bug tracker.
       render: plain text
     validations:
       required: true
@@ -40,8 +40,8 @@ body:
     id: url
     attributes:
       label: URL
-      description: A link with additional information on the topic.
-      placeholder: https://github.com/pd-externals/tipoftheday-plugin/issues/new?template=new-tip.yml
+      description: An (optional) link with additional information on the topic.
+      placeholder: https://github.com/pd-externals/tipoftheday-plugin/issues/new
     validations:
       required: false
   - type: textarea
@@ -50,10 +50,10 @@ body:
       label: Image
       description: Optionally upload an image
       placeholder: |
-        You can use this field to upload an (animated) GIF.
-        Please do *not* use this field for anything else.
+        You can use this field to upload a single (animated) GIF.
+        All other content will be removed.
+        .
         GIFs should be smaller than 650x533.
         Animated GIFs should have a constant framerate of 10fps.
     validations:
       required: false
-
