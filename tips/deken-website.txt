@@ -2,3 +2,4 @@ TITLE	Search for libraries via the webinterface
 DETAIL	There's a webinterface for finding libraries/objects/...
 DETAIL	Use the "More info.." link below. 
 URL	https://deken.puredata.info/
+AUTHOR	umlaeute
