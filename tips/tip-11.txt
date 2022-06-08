@@ -1,0 +1,8 @@
+TITLE	List all built-in objects
+DETAIL	Pd includes a help patch that lists all built-in objects. You can branch off to the documentation for every object from there.
+DETAIL	
+DETAIL	To open the list, right-click (Mac users: Ctrl-click) on an unoccupied spot on the canvas of a patch window and select Help from the context menu.
+DETAIL	
+DETAIL	Alternatively, open the Help menu and choose Browser... (shortcut Ctrl+B), then navigate to Pure Data/5.reference/ and double-click help-intro.pd to open the list.
+URL	http://msp.ucsd.edu/Pd_documentation/x2.htm#s2.7
+AUTHOR	aaaaalbert
