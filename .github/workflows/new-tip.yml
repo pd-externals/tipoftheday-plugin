@@ -1,0 +1,46 @@
+name: New Tip from Issue
+
+on:
+  issues:
+    types: [opened, reopened]
+
+jobs:
+  test:
+    name: Test Action
+    if: contains(github.event.issue.labels.*.name, 'automated tip')
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run GitHub issue forms parser
+        id: issue-parser
+        uses: edumserrano/github-issue-forms-parser@v1
+        with:
+          template-filepath: '.github/ISSUE_TEMPLATE/new-tip.yml'
+          issue-form-body: '${{ github.event.issue.body }}'
+
+      - name: Create tip-of-the-day files from issue
+        run: |
+          mkdir -p tips
+          ./parsejson.py --outdir tips --filename 'tip-${{ github.event.issue.number }}' --author '${{ github.actor }}' '${{ steps.issue-parser.outputs.parsed-issue }}'
+          ls -lha tips
+          find tips -type f -exec grep . {} +
+
+      - name: Create PR with new tip-of-the-day
+        id: cpr
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: '${{ github.event.issue.title }}'
+          add-paths: tips/*.*
+          signoff: false
+          branch: newtip-${{ github.event.issue.number }}
+          delete-branch: true
+          title: 'Tip#${{ github.event.issue.number }}: ${{ github.event.issue.title }}'
+          body: |
+            Closes: ${{ github.server_url }}/${{ github.repository }}/issues/${{ github.event.issue.number }}
+          labels: |
+            automated pr
+          draft: false
