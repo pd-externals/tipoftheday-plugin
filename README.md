@@ -22,7 +22,19 @@ https://pd.iem.sh/tipoftheday-plugin/
 
 # Adding new Tips
 
-Adding tips is simple:
+## The simple way
+
+1. Open https://github.com/pd-externals/tipoftheday-plugin/issues/new/choose
+2. Create a new "Tip of the Day" issue
+3. Fill in the form
+   - the only required parts are "Title" and "Detail"
+   - you can provide an URL to a webpage with more information
+   - you can also upload an (animated) GIF to illustrate your tip
+4. Click on <kbd>Submit new issue</kbd>
+5. Wait until somebody merges your new tip (or gives feedback on how to improve it)
+
+
+## The manual way
 
 1. create a new TXT file in the `tips/` directory, e.g. `tips/new-tip.txt`
 
@@ -30,7 +42,7 @@ Adding tips is simple:
    TITLE   Join the community by adding more Tips-of-the-Day
    DETAIL  Everybody is invited to add one or more Tips-of-the-Day.
    DETAIL  Clicking the "More info..." link below will take you to a webpage where you can submit new tips.
-   URL     https://github.com/pd-externals/tipoftheday-plugin/
+   URL     https://github.com/pd-externals/tipoftheday-plugin/issues
    ```
 
 2. sometimes a picture says more
