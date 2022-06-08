@@ -248,6 +248,7 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
         $textwin insert end "\n\n"
     }
     $textwin insert end ${detail}
+    $textwin insert end "\n"
 
     ::tip-of-the-day::free_imageloop $textwin
     if { {} ne ${image} } {
@@ -255,19 +256,22 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
         $fileimg configure -file $image
         $textwin.img configure -file [$fileimg cget -file]
         $textwin image create end -image $textwin.img
+        $textwin insert end "\n"
         ::tip-of-the-day::loopImgFromDisk $textwin $textwin.img $fileimg
     }
 
 
     if { {} ne ${url} } {
         $textwin tag bind moreurl <1> [list pd_menucommands::menu_openfile $url]
-        $textwin insert end "\n\n"
+        $textwin insert end "\n"
         $textwin insert end [_ "More info..."] moreurl
         $textwin insert end "\n"
     }
 
     if { {} ne ${author} } {
+        $textwin insert end "\n"
         $textwin insert end [format [_ "Suggested by %s"] $author] author
+        $textwin insert end "\n"
     }
 
 
