@@ -1,6 +1,5 @@
 name: Tip of the Day
 description: Submit a new Tip-of-the-Day
-title: ""
 labels: ["automated tip", "tip"]
 assignees:
   - umlaeute
