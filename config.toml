@@ -10,9 +10,9 @@ description = "things you should know about Pure Data"
   #download = "https://iem.at/"
   disableSpecial1stPost = true
 [[menu.main]]
-    name = "Tips"
+    name = "Add new Tip"
     weight = -200
-    url = "/tips/"
+    url = "https://github.com/pd-externals/tipoftheday-plugin/issues/new/choose"
 
 [[menu.main]]
     name = "Legal"
