@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  Push to IEM:
+  PushToIEM:
     runs-on: ubuntu-latest
 
     steps:
