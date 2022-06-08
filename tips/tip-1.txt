@@ -1,0 +1,5 @@
+TITLE	Ctrl key momentarily disables Edit mode
+DETAILS	It is sometimes cumbersome to toggle Edit mode to try out interactions with patches, particularly when you forget the mode you are in and it breaks your expectations when continuing work.
+DETAILS	
+DETAILS	You can operate objects quickly, e.g. toggle a button or move a slider, without leaving Edit mode: Press the Ctrl key on your keyboard. As long as you hold it down, objects behave as if you had turned off Edit mode.
+AUTHOR	aaaaalbert
