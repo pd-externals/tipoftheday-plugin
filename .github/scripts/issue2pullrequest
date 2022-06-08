@@ -142,7 +142,7 @@ def makeTXT(filename, title, details, url="", author="", outdir=".", **kwargs):
     if title:
         data.append("TITLE\t%s" % title)
     if details:
-        data += ["DETAILS\t%s" % _ for _ in details]
+        data += ["DETAIL\t%s" % _ for _ in details]
     if url:
         data.append("URL\t%s" % url)
     if author:
