@@ -58,7 +58,7 @@ proc ::tip-of-the-day::versioncheck {version} {
 if { [::tip-of-the-day::versioncheck 0.0.0] } {
 
 ## add tip (without duplicates)
-proc ::tip-of-the-day::add_tip {message detail url image} {
+proc ::tip-of-the-day::add_tip {message detail url image author} {
     foreach tip ${::tip-of-the-day::tips} {
         foreach {m d} $tip {break}
         if { ${m} eq ${message} && ${d} eq ${detail} } {
@@ -66,7 +66,8 @@ proc ::tip-of-the-day::add_tip {message detail url image} {
             return 0
         }
     }
-    lappend ::tip-of-the-day::tips [list $message $detail $url $image]
+    set tip [list $message $detail $url $image $author]
+    lappend ::tip-of-the-day::tips $tip
     return 1
 }
 
@@ -80,6 +81,7 @@ proc ::tip-of-the-day::load {filename} {
     set title {}
     set detail {}
     set url {}
+    set author {}
     set compat 1
     while { [gets $fp data] >= 0 } {
         set id [lindex $data 0]
@@ -90,6 +92,8 @@ proc ::tip-of-the-day::load {filename} {
             set detail "$detail\n$data"
         } elseif { "URL" eq $id } {
             set url $data
+        } elseif { "AUTHOR" eq $id } {
+            set author $data
         } elseif { "COMPAT" eq $id } {
             # for now ignore compatibility settings
             # LATER use it to exclude tips if they are for Pd-versions that don't apply
@@ -107,7 +111,7 @@ proc ::tip-of-the-day::load {filename} {
         set image {}
     }
     if { $compat && "${title}{$detail}" ne "" } {
-        if { [::tip-of-the-day::add_tip $title $detail $url $image] } {
+        if { [::tip-of-the-day::add_tip $title $detail $url $image $author] } {
             set result 1
         }
     }
@@ -234,7 +238,7 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
     }
     set tipid [expr $tipid % $numtips ]
 
-    foreach {title detail url image} [lindex ${::tip-of-the-day::tips} $tipid] {break}
+    foreach {title detail url image author} [lindex ${::tip-of-the-day::tips} $tipid] {break}
 
     $textwin configure -state normal
     $textwin delete 1.0 end
@@ -259,7 +263,14 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
         $textwin tag bind moreurl <1> [list pd_menucommands::menu_openfile $url]
         $textwin insert end "\n\n"
         $textwin insert end [_ "More info..."] moreurl
+        $textwin insert end "\n"
     }
+
+    if { {} ne ${author} } {
+        $textwin insert end [format [_ "Suggested by %s"] $author] author
+    }
+
+
     $textwin configure -state disabled
 
     # set the internal counter to the next tip
@@ -307,6 +318,7 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
 
     $msgid tag configure title -font "-weight bold"
     $msgid tag configure moreurl -foreground blue
+    $msgid tag configure author -foreground grey
 
     $msgid tag bind moreurl <1> "pd_menucommands::menu_openfile https://puredata.info/"
     $msgid tag bind moreurl <Enter> "$msgid tag configure moreurl -underline 1; $msgid configure -cursor $::cursor_runmode_clickme"
