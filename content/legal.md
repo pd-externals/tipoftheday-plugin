@@ -154,16 +154,5 @@ If you have any questions about this Privacy Policy, You can contact us:
 All content on this website unless otherwise noted is
 * © 2020 [Institute of Electronic Music and Acoustics](https://iem.at/).
 
-
-#### Icons
-Icons were obtained from the [Noun Project](https://thenounproject.com/) and are copyrighted as follows:
-
-|     |     |      |
-| --- |:--- | :--- |
-| ![Musician](/icons/musician.svg) | ©  James Keuning | [Public Domain](https://en.wikipedia.org/wiki/Public_domain) |
-| ![Conductor](/icons/conductor.svg) | ©  James Keuning | [Public Domain](https://en.wikipedia.org/wiki/Public_domain) |
-| ![Curious](/icons/curious.svg) | © Milinda Courey from the Noun Project | [CC-BY](https://creativecommons.org/licenses/by/2.0/) |
-
-
 </div>
 
