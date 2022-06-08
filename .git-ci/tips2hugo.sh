@@ -15,10 +15,12 @@ markdownify() {
     title=$(gettag "$1" TITLE | sed -e 's|"|\\"|g')
     description=$(gettag "$1" DETAIL)
     url=$(gettag "$1" URL | tail -1)
+    author=$(gettag "$1" AUTHOR | tail -1)
 
     cat <<EOF
 ---
 title: "${title}"
+author: "${author}"
 ---
 
 ${description}
