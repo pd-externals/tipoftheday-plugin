@@ -36,6 +36,8 @@ https://pd.iem.sh/tipoftheday-plugin/
 
 ## The manual way
 
+0. Fork the https://github.com/pd-externals/tipoftheday-plugin repository and clone it to your computer
+
 1. create a new TXT file in the `tips/` directory, e.g. `tips/new-tip.txt`
 
    ```
@@ -62,6 +64,7 @@ defining the type of information that follows:
 - `DETAIL` a longer description of the tip. for multiple lines, just add more `DETAIL` lines
 - `URL` an (optional) URL that will show as `More info...`
    (only a single `URL`-line is allowed)
+- `AUTHOR` who created the tip (optional)
 
 Currently these are the only keywords supported.
 
