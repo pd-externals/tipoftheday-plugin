@@ -10,12 +10,9 @@ body:
         Thanks for taking the time to submit a new Tip-of-the-Day.
 
         The Tips-of-the-Day will ultimately be displayed at Pd startup.
-        This means, that any fancy markdown formatting will be lost.
-        It also means, that *only* GIF images are supported (even if GitHub
-        let's you upload MP4-files, these will not be usable).
+        This means, that any fancy markdown formatting will be lost.  It also means, that *only* GIF images are supported (even if GitHub let's you upload MP4-files, these will not be usable).
 
-        Please fill out the form to create a new tip.
-        Once reviewed, it will be automatically included in the collection.
+        Please fill out the form to create a new tip.  Once reviewed, it will be automatically included in the collection.
 
         (If you only have a vague idea about a missing tip, just file a [feature request](https://github.com/pd-externals/tipoftheday-plugin/issues/new) instead...)
   - type: textarea
