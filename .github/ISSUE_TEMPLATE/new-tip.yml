@@ -44,7 +44,7 @@ body:
       description: Optionally upload an image
       placeholder: |
         You can use this field to upload a single (animated) GIF.  All other content will be removed.
-        GIFs should be smaller than 650x533.  Animated GIFs should have a constant framerate of 10fps.
+        GIFs should have a maximum width of 550 pixels.  Animated GIFs should have a constant framerate of 10fps.
         .
         Please note that only GIFs are supported.
     validations:

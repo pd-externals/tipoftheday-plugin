@@ -70,7 +70,7 @@ Currently these are the only keywords supported.
 
 ### GIF format for tips
 
-GIFs should be no larger than 650x533 pixels.
+GIFs should be no larger than 550 pixels wide.
 Animated GIFs will be played back at a framerate of 10fps (the settings in the GIF are ignored).
 
 
