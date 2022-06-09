@@ -16,7 +16,7 @@ body:
 
         (If you only have a vague idea about a missing tip, just file a [feature request](https://github.com/pd-externals/tipoftheday-plugin/issues/new) instead...)
 
-        Due to a bug in a script, it seems that you currently should not use quotes (e.g '"') in the "Details". We are working on a fix...
+        Due to a bug in a script, it seems that you currently should not use double quotes (e.g '"') in the *Details*. We are working on a fix... Until then, use single quotes.
   - type: textarea
     id: details
     attributes:
