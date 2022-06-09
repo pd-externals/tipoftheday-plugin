@@ -313,22 +313,8 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
         $winid configure -menu $::dialog_menubar
     }
 
-    frame $winid.totd
-    pack $winid.totd -side top -fill "both"
 
     set msgid $winid.totd.tip
-    text $msgid -padx 10 -pady 10 -wrap word
-    pack $msgid
-
-    $msgid tag configure title -font "-weight bold"
-    $msgid tag configure moreurl -foreground blue
-    $msgid tag configure author -foreground grey
-
-    $msgid tag bind moreurl <1> "pd_menucommands::menu_openfile https://puredata.info/"
-    $msgid tag bind moreurl <Enter> "$msgid tag configure moreurl -underline 1; $msgid configure -cursor $::cursor_runmode_clickme"
-    $msgid tag bind moreurl <Leave> "$msgid tag configure moreurl -underline 0; $msgid configure -cursor xterm"
-
-    image create photo $msgid.img
 
     ######################################################
     # user interaction: disable TOD, udpate TOD, Close, Next
@@ -358,8 +344,29 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
     pack $bt.next -side left -expand 1 -fill "x" -padx 10
     focus $bt.close
 
-    ::tip-of-the-day::bind_globalshortcuts $winid
 
+    ######################################################
+    # show tip
+    frame $winid.totd
+    pack $winid.totd -side top -fill "both"
+
+    text $msgid -padx 10 -pady 10 -wrap word
+    pack $msgid
+
+    $msgid tag configure title -font "-weight bold"
+    $msgid tag configure moreurl -foreground blue
+    $msgid tag configure author -foreground grey
+
+    $msgid tag bind moreurl <1> "pd_menucommands::menu_openfile https://puredata.info/"
+    $msgid tag bind moreurl <Enter> "$msgid tag configure moreurl -underline 1; $msgid configure -cursor $::cursor_runmode_clickme"
+    $msgid tag bind moreurl <Leave> "$msgid tag configure moreurl -underline 0; $msgid configure -cursor xterm"
+
+    image create photo $msgid.img
+
+
+    ######################################################
+    # finalize
+    ::tip-of-the-day::bind_globalshortcuts $winid
     ::tip-of-the-day::update_tip_info $msgid $tipid
 }
 # this function gets called
