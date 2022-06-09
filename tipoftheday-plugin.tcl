@@ -172,7 +172,12 @@ proc ::tip-of-the-day::loopImgFromDisk {winid targetimg fileimg {index 0} {time 
 
 
 proc ::tip-of-the-day::get-new-tips {{winid .}} {
-    set URL http://deken.puredata.info/tip-of-the-day/tips.zip
+    set proto http
+    if {[info exists ::deken::protocol] && $::deken::protocol != {} } {
+        # maybe we can use http://...
+        set proto $::deken::protocol
+    }
+    set URL ${proto}://deken.puredata.info/tip-of-the-day/tips.zip
     set outdir [::deken::utilities::get_writabledir ${::tip-of-the-day::tipsdirs}]
 
     if { "${outdir}" eq {} } {
