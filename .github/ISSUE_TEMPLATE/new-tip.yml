@@ -23,9 +23,9 @@ body:
       label: Detail
       description: Longer (plain text) description of the tip.
       placeholder: |
-        Most buggy Pd patches misbehave because the order-of-execution is ill-defined.
+        If your patch is buggy and misbehaves, chances are high that this is because of an ill-defined order-of-execution, easily caused by connecting a single message outlet to multiple inlets.
 
-        Therefore, avoid connecting a single message outlet to multiple inlets.  Instead, use [trigger] so you get a defined order-of-execution.
+        Instead, use [trigger] so you get a defined order-of-execution.
       render: plain text
     validations:
       required: true
