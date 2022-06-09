@@ -413,11 +413,15 @@ proc ::tip-of-the-day::initialize {} {
             ::tip-of-the-day::load $filename
         }
     }
-
     set startup [::pd_guiprefs::read tipoftheday_startup]
     if { [catch {set startup [expr bool($startup) ] } ] } {
         set startup 1
     }
+    if { [llength ${::tip-of-the-day::tips}] < 1 } {
+        set msg "Update to the latest 'Tips of the Day' via the 'Check online for updated tips' button below."
+        ::tip-of-the-day::add_tip "More 'Tips of the Day'" $msg {} {} {}
+    }
+
     set ::tip-of-the-day::run_at_startup $startup
     if { $startup } {
         after idle ::tip-of-the-day::show
