@@ -295,7 +295,7 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
     toplevel $winid -class DialogWindow
     set ::tip-of-the-day::winid $winid
     wm title $winid [_ "Tip of the Day"]
-    wm geometry $winid 670x550
+    wm geometry $winid 600x450
     wm minsize $winid 230 360
     wm resizable $winid 1 0
     wm transient $winid
