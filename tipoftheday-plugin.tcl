@@ -172,7 +172,7 @@ proc ::tip-of-the-day::loopImgFromDisk {winid targetimg fileimg {index 0} {time 
 
 
 proc ::tip-of-the-day::get-new-tips {{winid .}} {
-    set URL https://pd.iem.sh/tipoftheday-plugin/tips.zip
+    set URL http://deken.puredata.info/tip-of-the-day/tips.zip
     set outdir [::deken::utilities::get_writabledir ${::tip-of-the-day::tipsdirs}]
 
     if { "${outdir}" eq {} } {
