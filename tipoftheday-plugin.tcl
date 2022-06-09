@@ -344,7 +344,12 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
     frame $winid.totd
     pack $winid.totd -side top -fill "both"
 
-    text $msgid -padx 10 -pady 10 -wrap word
+    text $msgid -padx 10 -pady 10 -wrap word \
+        -yscrollcommand "$winid.totd.scroll set"
+    scrollbar $winid.totd.scroll -command "$msgid yview"
+    pack $winid.totd.scroll -side right -fill y
+    pack $msgid -side right -fill both -expand 1
+
     pack $msgid
 
     $msgid tag configure title -font "-weight bold"
