@@ -215,12 +215,6 @@ proc ::tip-of-the-day::get-new-tips {{winid .}} {
 # ######################################################################
 
 
-
-##### GUI ########
-proc ::tip-of-the-day::bind_globalshortcuts {toplevel} {
-    bind $toplevel <$::modifier-Key-w> [list destroy $toplevel]
-}
-
 ## save preferences (whether the user wants automatic tips on startup or not)
 proc ::tip-of-the-day::save_prefs {} {
     ::pd_guiprefs::write tipoftheday_startup ${::tip-of-the-day::run_at_startup}
@@ -366,7 +360,8 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
 
     ######################################################
     # finalize
-    ::tip-of-the-day::bind_globalshortcuts $winid
+    bind $winid <$::modifier-Key-w> [list destroy $winid]
+    bind $winid <Escape> [list destroy $winid]
     ::tip-of-the-day::update_tip_info $msgid $tipid
 }
 # this function gets called
