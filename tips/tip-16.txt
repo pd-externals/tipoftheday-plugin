@@ -1,0 +1,3 @@
+TITLE	Create GUI-objects without Menu/Shortcuts
+DETAIL	GUI-objects can be created either via the 'Put' menu or a keyboard shortcut. However, you can also create them starting with a regular object and using their shortname ('bng', 'tgl', nbx', 'hsl', vsl', 'hradio', 'vradio', 'vu', 'cnv').
+AUTHOR	umlaeute
