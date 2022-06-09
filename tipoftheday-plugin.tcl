@@ -176,7 +176,7 @@ proc ::tip-of-the-day::get-new-tips {{winid .}} {
     set outdir [::deken::utilities::get_writabledir ${::tip-of-the-day::tipsdirs}]
 
     if { "${outdir}" eq {} } {
-        ::pdwindow::error [_ "None of these tips-of-the-day directories exists or is writable:"]
+        ::pdwindow::error [_ "None of these tips-of-the-day directories exist or are writable:"]
         ::pdwindow::error "\n"
         foreach d ${::tip-of-the-day::tipsdirs} {
             ::pdwindow::error "\t$d\n"
