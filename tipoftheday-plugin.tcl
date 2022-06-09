@@ -85,7 +85,7 @@ proc ::tip-of-the-day::load {filename} {
     set compat 1
     while { [gets $fp data] >= 0 } {
         set id [lindex $data 0]
-        set data [lrange $data 1 end]
+        set data [string trim [string range $data [string length $id] end]]
         if { "TITLE" eq $id } {
             set title $data
         } elseif { "DETAIL" eq $id } {
