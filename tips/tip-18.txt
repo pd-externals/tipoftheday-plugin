@@ -1,0 +1,5 @@
+TITLE	Avoid fan-outs!
+DETAIL	If your patch is buggy and misbehaves, chances are high that this is because of an ill-defined order-of-execution, easily caused by connecting a single message outlet to multiple inlets.
+DETAIL	
+DETAIL	Instead, always use [trigger] so you get a defined order-of-execution.
+AUTHOR	umlaeute
