@@ -8,6 +8,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to submit a new Tip-of-the-Day.
+	Before proceeding, please make sure that your tip has not been added already, by [browsing the online tips](https://deken.puredata.info/tip-of-the-day/).
 
         The Tips-of-the-Day will ultimately be displayed at Pd startup.
         This means, that any fancy markdown formatting will be lost.  It also means, that *only* GIF images are supported (even if GitHub let's you upload MP4-files, these will not be usable).
