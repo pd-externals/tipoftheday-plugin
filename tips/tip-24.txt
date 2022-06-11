@@ -1,0 +1,3 @@
+TITLE	Don't copy paste - use abstractions!
+DETAIL	If you find yourself copy-pasting sections of code more than once, you probably ought to use an abstraction! It will make managing changes easier and will clean up your patch
+AUTHOR	corvett21
