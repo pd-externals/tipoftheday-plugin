@@ -1,0 +1,6 @@
+TITLE	Ctrl-click flips Number box to zero and back
+DETAIL	When in Run mode, click a Number box with the Ctrl or Alt key held down to set its value to zero immediately.
+DETAIL	
+DETAIL	Ctrl-click or Alt-click again, and the previous value is restored.
+URL	http://msp.ucsd.edu/Pd_documentation/x2.htm#s1.3
+AUTHOR	aaaaalbert
