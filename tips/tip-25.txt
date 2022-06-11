@@ -1,0 +1,3 @@
+TITLE	don't approve this
+DETAIL	this is just to test single quotes in the title
+AUTHOR	umlaeute
