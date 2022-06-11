@@ -33,7 +33,7 @@ jobs:
           title: ${{ github.event.issue.title }}
         run: |
           mkdir -p tips
-          .github/scripts/issue2pullrequest --outdir tips --title '${{ github.event.issue.title }}' --filename 'tip-${{ github.event.issue.number }}' --author '${{ github.event.issue.user.login }}' '${{ steps.issue-parser.outputs.parsed-issue }}'
+          .github/scripts/issue2pullrequest --outdir tips --title "${title}" --filename 'tip-${{ github.event.issue.number }}' --author '${{ github.event.issue.user.login }}' '${{ steps.issue-parser.outputs.parsed-issue }}'
           find tips -type f -exec grep . {} +
 
       - name: Create PR with new tip-of-the-day
