@@ -214,7 +214,9 @@ proc ::tip-of-the-day::get-new-tips {{winid .}} {
 
 
     set outdir [file normalize $outdir]
-    set outfile [::deken::utilities::get_tmpfilename [::deken::utilities::get_tmpdir] .zip tips-of-the-day]
+    set tmpdir [::deken::utilities::get_tmpdir]
+    if { $tmpdir eq {} } { set tmpdir $outdir }
+    set outfile [::deken::utilities::get_tmpfilename $tmpdir .zip tips-of-the-day]
     set tipszip [::deken::utilities::download_file $URL $outfile]
     set numtips [llength ${::tip-of-the-day::tips}]
 
