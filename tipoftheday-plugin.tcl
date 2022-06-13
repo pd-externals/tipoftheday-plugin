@@ -157,7 +157,9 @@ proc ::tip-of-the-day::loopImgFromMemory {winid targetimg imagelist {index 0} {t
 proc ::tip-of-the-day::loopImgFromDisk {winid targetimg fileimg {index 0} {time 100} {imagelist {}}} {
     if {[catch {$fileimg configure -format "gif -index $index"} stderr]} {
         image delete $fileimg
-        ::tip-of-the-day::loopImgFromMemory $winid $targetimg $imagelist 0 ${time}
+        if { [llength $imagelist] > 1 } {
+            ::tip-of-the-day::loopImgFromMemory $winid $targetimg $imagelist 0 ${time}
+        }
     } else {
         $targetimg copy $fileimg -compositingrule overlay
 
