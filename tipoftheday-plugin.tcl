@@ -58,7 +58,7 @@ proc ::tip-of-the-day::versioncheck {version} {
 if { [::tip-of-the-day::versioncheck 0.0.0] } {
 
 ## add tip (without duplicates)
-proc ::tip-of-the-day::add_tip {message detail url image author} {
+proc ::tip-of-the-day::add_tip {message detail {author {}} {url {}} {image {}}} {
     foreach tip ${::tip-of-the-day::tips} {
         foreach {m d} $tip {break}
         if { ${m} eq ${message} && ${d} eq ${detail} } {
@@ -66,7 +66,7 @@ proc ::tip-of-the-day::add_tip {message detail url image author} {
             return 0
         }
     }
-    set tip [list $message $detail $url $image $author]
+    set tip [list $message $detail $author $url $image]
     lappend ::tip-of-the-day::tips $tip
     return 1
 }
@@ -111,7 +111,7 @@ proc ::tip-of-the-day::load {filename} {
         set image {}
     }
     if { $compat && "${title}{$detail}" ne "" } {
-        if { [::tip-of-the-day::add_tip $title $detail $url $image $author] } {
+        if { [::tip-of-the-day::add_tip $title $detail $author $url $image] } {
             set result 1
         }
     }
@@ -255,7 +255,7 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
     }
     set tipid [expr $tipid % $numtips ]
 
-    foreach {title detail url image author} [lindex ${::tip-of-the-day::tips} $tipid] {break}
+    foreach {title detail author url image} [lindex ${::tip-of-the-day::tips} $tipid] {break}
 
     $textwin configure -state normal
     $textwin delete 1.0 end
@@ -444,7 +444,7 @@ proc ::tip-of-the-day::initialize {} {
     }
     if { [llength ${::tip-of-the-day::tips}] < 1 } {
         set msg "Update to the latest 'Tips of the Day' via the 'Check online for updated tips' button below."
-        ::tip-of-the-day::add_tip "More 'Tips of the Day'" $msg {} {} {}
+        ::tip-of-the-day::add_tip "More 'Tips of the Day'" $msg
     }
 
     set ::tip-of-the-day::run_at_startup $startup
