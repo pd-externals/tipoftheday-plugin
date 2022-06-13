@@ -53,6 +53,12 @@ https://pd.iem.sh/tipoftheday-plugin/
    To do so, just add an (animated, if you like) GIF image that has the same name as your TXT file (e.g. `tips/new-tip.gif`).
    Make sure that your GIF is small enough to fit into the dialog.
 
+3. sometimes a patch says even more
+
+   Some tips might benefit from providing an additional *tip patch* that allows users to try out the interaction described by the tip immediately. The tip patch may include extra info to help the user understand and set up the context, perform the steps in the right order, or other small bits of hand-holding. Tip patches should still conform to the general Tip format -- to teach a single thing.
+
+   Also, tip patches should be vanilla only (no fancy external objects that might not be installed on the user's machine).
+
 3. create a *Pull Request* with the new tip(s)
 
 
@@ -73,6 +79,10 @@ Currently these are the only keywords supported.
 GIFs should be no larger than 550 pixels wide.
 Animated GIFs will be played back at a framerate of 10fps (the settings in the GIF are ignored).
 
+### Interactive patches for tips
+
+You can also include a (small!) patch to illustrate a tip.
+These patches should be minimal and only describe the tip at hand.
 
 # FAQ
 
