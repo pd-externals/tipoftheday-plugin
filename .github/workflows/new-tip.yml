@@ -39,7 +39,7 @@ jobs:
           data: ${{ steps.issue-parser.outputs.parsed-issue }}
         run: |
           mkdir -p tips
-          .github/scripts/issue2pullrequest --outdir tips --title "${title}" --filename '${title}' --author "${author}" "${data}"
+          .github/scripts/issue2pullrequest -v --outdir tips --title "${title}" --filename "${title}" --author "${author}" "${data}"
           find tips -type f -exec grep . {} +
 
       - name: Create PR with new tip-of-the-day
