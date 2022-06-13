@@ -1,0 +1,6 @@
+TITLE	Restart Tip-of-the-Day animation.
+DETAIL	If a 'Tip of the Day' contains an animation, it will be played once when the tip is displayed.
+DETAIL  To see the animation again, just click on the image.
+DETAIL
+DETAIL	Try it out...
+AUTHOR	umlaeute
