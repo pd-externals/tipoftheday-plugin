@@ -58,7 +58,7 @@ proc ::tip-of-the-day::versioncheck {version} {
 if { [::tip-of-the-day::versioncheck 0.0.0] } {
 
 ## add tip (without duplicates)
-proc ::tip-of-the-day::add_tip {message detail {author {}} {url {}} {image {}}} {
+    proc ::tip-of-the-day::add_tip {message detail {author {}} {url {}} {image {}} {patch {}}} {
     foreach tip ${::tip-of-the-day::tips} {
         foreach {m d} $tip {break}
         if { ${m} eq ${message} && ${d} eq ${detail} } {
@@ -66,7 +66,7 @@ proc ::tip-of-the-day::add_tip {message detail {author {}} {url {}} {image {}}} 
             return 0
         }
     }
-    set tip [list $message $detail $author $url $image]
+    set tip [list $message $detail $author $url $image $patch]
     lappend ::tip-of-the-day::tips $tip
     return 1
 }
@@ -110,8 +110,12 @@ proc ::tip-of-the-day::load {filename} {
     if {! [file exists $image] } {
         set image {}
     }
+    set patch "[file rootname $filename].pd"
+    if {! [file exists $patch] } {
+        set patch {}
+    }
     if { $compat && "${title}{$detail}" ne "" } {
-        if { [::tip-of-the-day::add_tip $title $detail $author $url $image] } {
+        if { [::tip-of-the-day::add_tip $title $detail $author $url $image $patch] } {
             set result 1
         }
     }
@@ -255,7 +259,7 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
     }
     set tipid [expr $tipid % $numtips ]
 
-    foreach {title detail author url image} [lindex ${::tip-of-the-day::tips} $tipid] {break}
+    foreach {title detail author url image patch} [lindex ${::tip-of-the-day::tips} $tipid] {break}
 
     $textwin configure -state normal
     $textwin delete 1.0 end
@@ -277,6 +281,13 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
         ::tip-of-the-day::loopImgFromDisk $textwin $textwin.img $fileimg
     }
 
+
+    if { {} ne ${patch} } {
+        $textwin tag bind patch <1> [list open_file $patch]
+        $textwin insert end "\n"
+        $textwin insert end [_ "Try it out!"] patch
+        $textwin insert end "\n"
+    }
 
     if { {} ne ${url} } {
         $textwin tag bind url <1> [list pd_menucommands::menu_openfile $url]
@@ -377,11 +388,14 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
 
     $msgid tag configure title -font "-weight bold"
     $msgid tag configure url -foreground blue
+    $msgid tag configure patch -foreground blue
     $msgid tag configure author -foreground grey
 
     $msgid tag bind url <1> "pd_menucommands::menu_openfile https://puredata.info/"
     $msgid tag bind url <Enter> "$msgid tag configure url -underline 1; $msgid configure -cursor $::cursor_runmode_clickme"
     $msgid tag bind url <Leave> "$msgid tag configure url -underline 0; $msgid configure -cursor xterm"
+    $msgid tag bind patch <Enter> "$msgid tag configure patch -underline 1; $msgid configure -cursor $::cursor_editmode_nothing"
+    $msgid tag bind patch <Leave> "$msgid tag configure patch -underline 0; $msgid configure -cursor xterm"
 
     image create photo $msgid.img
 
