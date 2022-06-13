@@ -108,7 +108,14 @@ def getData(args):
         args,
         ["filename", "title", "details", "url", "image", "author"],
     )
-    d0 = {k: v.strip() for k, v in d0.items()}
+
+    def trystrip(x):
+        try:
+            return x.strip()
+        except AttributeError:
+            return x
+
+    d0 = {k: trystrip(v) for k, v in d0.items()}
     data = {}
     # cleanup title
     data["title"] = d0.get("title", "").replace("\n", " ")
@@ -118,11 +125,13 @@ def getData(args):
 
     # cleanup details (get rid of code-block)
     details = d0.get("details", "")
-    try:
-        details = re.split(r"^(.{3})[^\n]*\n(.*)\1", details, flags=re.DOTALL)[2]
-    except IndexError:
-        pass
-    data["details"] = details.splitlines()
+    if type(details) == str:
+        try:
+            details = re.split(r"^(.{3})[^\n]*\n(.*)\1", details, flags=re.DOTALL)[2]
+        except IndexError:
+            pass
+        details = details.splitlines()
+    data["details"] = details
     # cleanup image (get rid of markdown)
     try:
         data["image"] = re.split(
