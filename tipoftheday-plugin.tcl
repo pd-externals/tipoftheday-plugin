@@ -175,6 +175,7 @@ proc ::tip-of-the-day::loopAgain {winid targetimg imagelist time} {
 # while the frames are read (and composited to the final frame) they are also cached
 # this speeds up looping significantly after the first round
 proc ::tip-of-the-day::loopImgFromDisk {winid targetimg fileimg {index 0} {time 100} {imagelist {}}} {
+    if { ! [winfo exists $winid]} { return  }
     if {[catch {$fileimg configure -format "gif -index $index"} stderr]} {
         image delete $fileimg
         if { [llength $imagelist] > 1 } {
