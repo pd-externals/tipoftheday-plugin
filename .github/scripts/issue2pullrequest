@@ -2,7 +2,10 @@
 
 import re
 import os
+import logging
 
+log = logging.getLogger(os.path.basename(__file__))
+logging.basicConfig()
 
 try:
     from slugify import slugify
@@ -72,6 +75,7 @@ def parseArgs():
     args = parser.parse_args()
     args.verbose = args.verbose - args.quiet
     del args.quiet
+    log.setLevel(logging.WARNING - 10 * args.verbose)
     return args
 
 
@@ -186,8 +190,10 @@ def makeGIF(filename, image="", outdir="", **kwargs):
 
 if __name__ == "__main__":
     args = parseArgs()
+    log.debug(args)
     d = getData(args)
     d["outdir"] = args.outdir
+    log.info(d)
     if (not d["title"]) or (not d["details"]):
         raise (Exception("'title' and 'details' are required"))
     makeTXT(**d)
