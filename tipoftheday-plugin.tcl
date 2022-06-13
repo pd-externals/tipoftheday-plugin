@@ -279,9 +279,9 @@ proc ::tip-of-the-day::update_tip_info {textwin {tipid {}}} {
 
 
     if { {} ne ${url} } {
-        $textwin tag bind moreurl <1> [list pd_menucommands::menu_openfile $url]
+        $textwin tag bind url <1> [list pd_menucommands::menu_openfile $url]
         $textwin insert end "\n"
-        $textwin insert end [_ "More info..."] moreurl
+        $textwin insert end [_ "More info..."] url
         $textwin insert end "\n"
     }
 
@@ -376,12 +376,12 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
     pack $msgid
 
     $msgid tag configure title -font "-weight bold"
-    $msgid tag configure moreurl -foreground blue
+    $msgid tag configure url -foreground blue
     $msgid tag configure author -foreground grey
 
-    $msgid tag bind moreurl <1> "pd_menucommands::menu_openfile https://puredata.info/"
-    $msgid tag bind moreurl <Enter> "$msgid tag configure moreurl -underline 1; $msgid configure -cursor $::cursor_runmode_clickme"
-    $msgid tag bind moreurl <Leave> "$msgid tag configure moreurl -underline 0; $msgid configure -cursor xterm"
+    $msgid tag bind url <1> "pd_menucommands::menu_openfile https://puredata.info/"
+    $msgid tag bind url <Enter> "$msgid tag configure url -underline 1; $msgid configure -cursor $::cursor_runmode_clickme"
+    $msgid tag bind url <Leave> "$msgid tag configure url -underline 0; $msgid configure -cursor xterm"
 
     image create photo $msgid.img
 
