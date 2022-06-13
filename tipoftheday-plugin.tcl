@@ -140,6 +140,10 @@ proc ::tip-of-the-day::free_imageloop {winid} {
             catch {image delete $img}
         }
     }
+
+    # unbind the click-to-repeat
+    bind $winid <1> {}
+
 }
 
 # loop through images that are cached in memory
@@ -148,7 +152,19 @@ proc ::tip-of-the-day::loopImgFromMemory {winid targetimg imagelist {index 0} {t
     set img [lindex $imagelist $index]
     set nextIndex [expr ($index + 1) % [llength $imagelist]]
     $targetimg copy $img -compositingrule overlay
-    set ::tip-of-the-day::imageloop($winid) [after $time [list ::tip-of-the-day::loopImgFromMemory $winid $targetimg $imagelist $nextIndex $time]]
+    if { $nextIndex != 0 } {
+        set ::tip-of-the-day::imageloop($winid) [after $time [list ::tip-of-the-day::loopImgFromMemory $winid $targetimg $imagelist $nextIndex $time]]
+    } else {
+        #loop stop: should we tell the user to click to restart the animation?
+    }
+}
+
+proc ::tip-of-the-day::loopAgain {winid targetimg imagelist time} {
+    variable imageloop
+    if { [info exists imageloop($winid) ] } {
+        after cancel $imageloop($winid)
+    }
+    ::tip-of-the-day::loopImgFromMemory $winid $targetimg $imagelist 0 ${time}
 }
 
 # loop through images of a multi-frame GIF
@@ -158,7 +174,7 @@ proc ::tip-of-the-day::loopImgFromDisk {winid targetimg fileimg {index 0} {time 
     if {[catch {$fileimg configure -format "gif -index $index"} stderr]} {
         image delete $fileimg
         if { [llength $imagelist] > 1 } {
-            ::tip-of-the-day::loopImgFromMemory $winid $targetimg $imagelist 0 ${time}
+            bind $winid <1> [list ::tip-of-the-day::loopAgain $winid $targetimg $imagelist ${time}]
         }
     } else {
         $targetimg copy $fileimg -compositingrule overlay
