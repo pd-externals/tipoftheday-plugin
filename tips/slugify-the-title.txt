@@ -1,0 +1,3 @@
+TITLE	slugify the title
+DETAIL	when creating a new tip-of-the-day, the title get's automatically converted to the filename...
+AUTHOR	umlaeute
