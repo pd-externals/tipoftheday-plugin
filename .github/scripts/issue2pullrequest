@@ -110,10 +110,12 @@ def getData(args):
     )
     d0 = {k: v.strip() for k, v in d0.items()}
     data = {}
-    # cleanup filename
-    data["filename"] = slugify(d0.get("filename", ""))
     # cleanup title
     data["title"] = d0.get("title", "").replace("\n", " ")
+
+    # cleanup filename
+    data["filename"] = slugify(d0.get("filename", data["title"]))
+
     # cleanup details (get rid of code-block)
     details = d0.get("details", "")
     try:
