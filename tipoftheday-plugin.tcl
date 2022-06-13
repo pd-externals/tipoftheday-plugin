@@ -370,10 +370,12 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
 
     ######################################################
     # finalize
-    bind $winid <$::modifier-Key-w> [list destroy $winid]
-    bind $winid <Escape> [list destroy $winid]
+    bind $winid <$::modifier-Key-w> "destroy $winid %W; break"
+    bind $winid <KeyPress-Escape> "destroy $winid %W; break"
+
     ::tip-of-the-day::update_tip_info $msgid $tipid
 }
+
 # this function gets called
 # - at startup (if enabled)
 # - via the menu
