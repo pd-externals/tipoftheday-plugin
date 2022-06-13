@@ -387,7 +387,7 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
 
     pack $msgid
 
-    $msgid tag configure title -font "-weight bold"
+    $msgid tag configure title -font TkCaptionFont
     $msgid tag configure url -foreground blue
     $msgid tag configure patch -foreground blue
     $msgid tag configure author -foreground grey
