@@ -4,6 +4,14 @@ import re
 import os
 
 
+try:
+    from slugify import slugify
+except ImportError:
+
+    def slugify(x):
+        return x.strip("/").replace("/", "-").replace("\n", "").replace(" ", "-")
+
+
 def parseArgs():
     import argparse
 
@@ -103,13 +111,7 @@ def getData(args):
     d0 = {k: v.strip() for k, v in d0.items()}
     data = {}
     # cleanup filename
-    data["filename"] = (
-        d0.get("filename", "")
-        .strip("/")
-        .replace("/", "-")
-        .replace("\n", "")
-        .replace(" ", "")
-    )
+    data["filename"] = slugify(d0.get("filename", ""))
     # cleanup title
     data["title"] = d0.get("title", "").replace("\n", " ")
     # cleanup details (get rid of code-block)
