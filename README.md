@@ -86,6 +86,16 @@ These patches should be minimal and only describe the tip at hand.
 
 # FAQ
 
+### Installation
+"Tip of the Day" is a [GUI plugin](https://puredata.info/docs/guiplugins/GUIPlugins/).
+Use `git clone` or
+[download the ZIP archive](https://github.com/pd-externals/tipoftheday-plugin/archive/refs/heads/main.zip)
+and extract it to your
+[user-specific Pd folder](https://puredata.info/docs/faq/how-do-i-install-externals-and-help-files),
+e.g. `~/Documents/Pd/externals`.
+
+The next time you start Pd, the Tip of the Day dialog will open.
+
 ### This is annoying.
 Since "Tip of the Day" dialogs are super-annoying for most users,
 you can disable them by unchecking the "Show tips on every startup" in the dialog.
