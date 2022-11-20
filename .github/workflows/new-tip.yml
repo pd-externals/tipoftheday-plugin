@@ -27,7 +27,7 @@ jobs:
 
       - name: Run GitHub issue forms parser
         id: issue-parser
-        uses: edumserrano/github-issue-forms-parser@v1
+        uses: edumserrano/github-issue-forms-parser@v1.2.0
         with:
           template-filepath: '.github/ISSUE_TEMPLATE/new-tip.yml'
           issue-form-body: '${{ github.event.issue.body }}'
