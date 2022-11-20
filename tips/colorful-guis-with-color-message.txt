@@ -1,0 +1,3 @@
+TITLE	Colorful GUIS with color message!
+DETAIL	It is possible to change the color of gui-objects via a color message. The message consists of three parameters, one for the color of the background, one for the front (when a bang is clicked, for example) and the last for the label of the GUI. You can provide a simple number from 0 to 29 to select a preset (the colors from properties menu), or provide a rgb color like #00ff7f. Check the helpfiles of the guis for more examples on how to change its properties!
+AUTHOR	abreubacelar
