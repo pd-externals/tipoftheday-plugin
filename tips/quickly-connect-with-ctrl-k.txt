@@ -1,0 +1,3 @@
+TITLE	Quickly connect with Ctrl-K
+DETAIL	Rather than fiddling with your mouse to connect an outlet to an inlet, you can select the two objects you want to connect and hit Ctrl-K.
+AUTHOR	umlaeute
