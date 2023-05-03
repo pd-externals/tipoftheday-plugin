@@ -1,0 +1,3 @@
+TITLE	Tab key to cycle through objects
+DETAIL	Select a single object and press the Tab key to cycle through the objects, message-boxes,...
+AUTHOR	umlaeute
