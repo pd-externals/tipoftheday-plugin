@@ -1,0 +1,3 @@
+TITLE	Keep connecting with Shift
+DETAIL	If you press Shift to connect two objects, you will stay in connection mode (so you do not have to find the outlet again)
+AUTHOR	umlaeute
