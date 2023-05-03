@@ -1,0 +1,3 @@
+TITLE	Insert an existing object into a connection with Ctrl-K
+DETAIL	To insert an existing obejct into an existing connection, select the to-be-inserted object and the connection (or the connected objects) and then press Ctrl-K.
+AUTHOR	umlaeute
