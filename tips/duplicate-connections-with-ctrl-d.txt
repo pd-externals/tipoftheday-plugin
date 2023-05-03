@@ -1,0 +1,3 @@
+TITLE	Duplicate connections with Ctrl-d
+DETAIL	You can duplicate a connection to the right-hand inlets/outlets by selecting the cord and pressing Ctrl-d.
+AUTHOR	umlaeute
