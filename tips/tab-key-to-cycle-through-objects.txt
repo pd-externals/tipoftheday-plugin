@@ -1,3 +1,4 @@
 TITLE	Tab key to cycle through objects
 DETAIL	Select a single object and press the Tab key to cycle through the objects, message-boxes,...
+DETAIL	Pressing Shift+Tab cycles in the reverse direction.
 AUTHOR	umlaeute

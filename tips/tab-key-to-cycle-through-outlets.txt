@@ -1,6 +1,7 @@
 TITLE	Tab key to cycle through outlets
 DETAIL	While connecting two objects, press the Tab key to to change the outlet you want to connect from.
 DETAIL	This is often simpler than selecting the correct outlet with the mouse.
+DETAIL	Pressing Shift+Tab cycles in the reverse direction.
 DETAIL	
 DETAIL	(On a few systems, you can also use the Tab key to cycle through the inlets to connect to.)
 AUTHOR	umlaeute
