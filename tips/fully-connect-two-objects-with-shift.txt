@@ -1,0 +1,3 @@
+TITLE	Fully connect two objects with Shift
+DETAIL	You can connect all inlets of one object (starting with the selected outlet) to all outlets of another object (starting with the selected inlet), by first selecting both objects and then creating the connection with Shift.
+AUTHOR	umlaeute
