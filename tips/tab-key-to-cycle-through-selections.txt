@@ -1,0 +1,3 @@
+TITLE	Tab key to cycle through selections
+DETAIL	Select a connection and press the Tab key to change the selection to the next cord.
+AUTHOR	umlaeute
