@@ -1,0 +1,3 @@
+TITLE	Swap connections with Shift-Click
+DETAIL	Swap two connections by selecting one cord and Shift clicking another cord.
+AUTHOR	umlaeute
