@@ -1,0 +1,3 @@
+TITLE	Completely disconnect an object with Ctrl-k
+DETAIL	You can remove all incoming and outgoing connections of an object by selecting it and pressing Ctrl-k.
+AUTHOR	umlaeute
