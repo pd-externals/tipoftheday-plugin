@@ -1,4 +1,4 @@
-TITLE	Tab key to cycle through selections
+TITLE	Tab key to cycle through connections
 DETAIL	Select a connection and press the Tab key to change the selection to the next cord.
 DETAIL	Pressing Shift+Tab cycles in the reverse direction.
 AUTHOR	umlaeute
