@@ -1,3 +1,3 @@
 TITLE	Find the origin of an error message
-DETAIL	If you see an error in the Pd console and you're wondering what triggered it, you can Ctrl-click the message to bring the patch window to the front that contains the object in question. The object is marked blue.
+DETAIL	If you see an error in the Pd console and you're wondering what triggered it, you can Ctrl-click the message to bring the patch window to the front that contains the object in question. The object is highlighted.
 AUTHOR	reduzent
