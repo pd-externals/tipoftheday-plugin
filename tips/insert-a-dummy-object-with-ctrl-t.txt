@@ -1,0 +1,5 @@
+TITLE	Insert a dummy object with Ctrl-T
+DETAIL	You can add a new dummy-object into an existing connection by selecting the cord and triggerizing it with Ctrl-T.
+DETAIL	
+DETAIL	This saves a bit of disconnecting and re-connecting...
+AUTHOR	umlaeute
