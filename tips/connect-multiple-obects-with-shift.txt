@@ -1,0 +1,5 @@
+TITLE	Connect multiple obects with Shift
+DETAIL	You can connect multiple objects to a single inlet by selecting the source objects and creating the actual connection with Shift.
+DETAIL	
+DETAIL	If you also select the target object, the source objects will be connected to the various inlets of the target (from left to right).
+AUTHOR	umlaeute
