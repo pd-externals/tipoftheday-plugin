@@ -1,10 +1,5 @@
 TITLE	Wrong Language? Linguaxe incorrecta? ખોટી ભાષા?
 DETAIL	Pd's interface tries to adapt to your system language (e.g. on a German system, your Menu will show 'Hilfe' instead of 'Help'.)
 DETAIL	
-DETAIL	If you are not satisfied with the chosen language (e.g. because you prefer the English version over the incomplete Albanian translation), you can change the language by setting the environment variable `LANG` to the two-letter code of your preferred language (e.g. 'fr' for French).
-DETAIL	
-DETAIL	Consult your Operating System help on how to set environment variables.
-DETAIL	For a list of valid two-letter codes, check the ISO-639-1 codes found under the 'More info...' link.
-DETAIL Use the 'C' language for no translation.
-URL	https://www.gnu.org/software/gettext/manual/html_node/Usual-Language-Codes.html
+DETAIL	If you are not satisfied with the chosen language (e.g. because you prefer the English version over the incomplete Albanian translation), you can change the language via the Pd preferences.
 AUTHOR	umlaeute
