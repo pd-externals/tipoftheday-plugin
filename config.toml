@@ -9,6 +9,7 @@ description = "things you should know about Pure Data"
   #email = "zmoelnig@iem.at"
   #download = "https://iem.at/"
   disableSpecial1stPost = true
+  social = true
 
 [[Params.socialIcons]]
   name = "github"
