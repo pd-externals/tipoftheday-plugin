@@ -122,7 +122,7 @@ proc ::tip-of-the-day::load {filename} {
     return $result
 }
 
-# create an image and assoicate it with a widget
+# create an image and associate it with a widget
 proc ::tip-of-the-day::make_image {winid} {
     variable images
     set newimg [image create photo]
@@ -359,7 +359,7 @@ proc ::tip-of-the-day::messageBox {{tipid {}}} {
     set msgid $winid.totd.tip
 
     ######################################################
-    # user interaction: disable TOD, udpate TOD, Close, Next
+    # user interaction: disable TOD, update TOD, Close, Next
     # fopcus Close
 
     frame $winid.nb

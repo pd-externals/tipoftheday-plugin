@@ -5,7 +5,7 @@ simple plugin to display a "Tip of the Day" dialog at startup of Pd.
 
 
 # Updating the Tips database
-In order to get the lastest and greatest tips,
+In order to get the latest and greatest tips,
 click on the "Check for updated tips" link.
 
 #### TODO
